@@ -1,0 +1,47 @@
+{{- /* Achievements: year + title + issuer rows.
+     The Nth achievement may have an image: personal/photos/award-N.*. The
+     image is optional; when it is there it becomes a button that opens the
+     lightbox with the full-size file.
+
+     Certificates are often portrait scans, so the thumbnail is shown with
+     object-fit: contain on a --surface panel. The text is never cropped.
+
+     Usage: partial "achievements.html" (dict "items" $p.achievements "id" "award-1")
+*/ -}}
+{{- $items := .items -}}
+{{- if $items }}
+<section class="section section--achievements">
+  <div class="container">
+    <h2 class="section__title">Achievements</h2>
+    <ul class="rows">
+      {{- range $i, $item := $items }}
+      {{- $base := printf "award-%d" (add $i 1) -}}
+      {{- $resource := resources.GetMatch (printf "photos/%s.*" $base) -}}
+      <li class="rows__item {{ if $resource }}rows__item--with-image{{ end }}">
+        <span class="rows__year">{{ .year }}</span>
+        <span class="rows__title">{{ .title }}</span>
+        <span class="rows__issuer">{{ .issuer }}</span>
+        {{- with $resource }}
+        {{- $full := .Resize "1600x webp q88" -}}
+        <button class="award" type="button"
+                data-lightbox-src="{{ $full.RelPermalink }}"
+                data-lightbox-alt="{{ printf "%s certificate" $item.title }}"
+                data-lightbox-caption="{{ $item.title }}">
+          <span class="award__thumb">
+            {{ partial "img.html" (dict
+                "base" $base
+                "alt" (printf "%s certificate" $item.title)
+                "class" "award__img"
+                "width" 320
+                "sizes" "(max-width: 760px) 96px, 120px"
+              ) }}
+          </span>
+          <span class="award__hint">View</span>
+        </button>
+        {{- end }}
+      </li>
+      {{- end }}
+    </ul>
+  </div>
+</section>
+{{- end }}

@@ -1,0 +1,9 @@
+{{- /* The lead line under a page heading.
+
+       It is the page's own description, with the {name} and {role}
+       placeholders filled in from personal/profile.yaml, so the line
+       describes whoever owns the site. */}}
+{{- $page := . -}}
+{{- with $page.Params.description }}
+<p class="page-head__lead">{{ partial "description.html" $page }}</p>
+{{- end }}

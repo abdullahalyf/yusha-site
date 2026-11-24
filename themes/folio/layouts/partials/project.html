@@ -1,0 +1,53 @@
+{{- /* Project item. The image is looked up by fixed base name: the Nth project
+     in profile.yaml uses personal/photos/project-N.*.
+     Usage: partial "project.html" (dict "item" $proj "index" $i "mode" "featured"|"grid")
+*/ -}}
+{{- $item := .item -}}
+{{- $index := .index | default 0 -}}
+{{- $mode := .mode | default "grid" -}}
+{{- $reverse := and (eq $mode "featured") (eq (mod $index 2) 1) -}}
+{{- $image := resources.GetMatch (printf "photos/project-%d.*" (add $index 1)) -}}
+{{- /* Most thumbnails are drawings of what the program does, so they are
+     described as illustrations. A project whose thumbnail is a real
+     screenshot says so in its own `alt`. */ -}}
+{{- $alt := $item.alt | default (printf "Illustration of %s" $item.title) -}}
+<article class="project {{ if eq $mode "featured" }}project--featured{{ if $reverse }} project--reverse{{ end }}{{ else }}project--card{{ end }}">
+  {{- with $image }}
+  <div class="project__media">
+    {{ partial "img.html" (dict
+        "base" (printf "project-%d" (add $index 1))
+        "alt" $alt
+        "class" "project__img"
+        "width" 1600
+        "sizes" "(max-width: 720px) 100vw, 560px"
+      ) }}
+  </div>
+  {{- end }}
+  <div class="project__body">
+    <h3 class="project__title">{{ $item.title }}</h3>
+    {{- with $item.summary }}
+    <p class="project__summary">{{ . }}</p>
+    {{- end }}
+    {{- with $item.tech }}
+    <ul class="project__tech">
+      {{- range . }}<li class="pill">{{ . }}</li>{{ end }}
+    </ul>
+    {{- end }}
+    {{- if or $item.live $item.code }}
+    <p class="project__links">
+      {{- with $item.live }}
+      <a class="link" href="{{ . }}" rel="noopener noreferrer">
+        {{ partial "icon.html" (dict "name" "external" "class" "link__icon") }}
+        <span>Live</span>
+      </a>
+      {{- end }}
+      {{- with $item.code }}
+      <a class="link" href="{{ . }}" rel="noopener noreferrer">
+        {{ partial "icon.html" (dict "name" "code" "class" "link__icon") }}
+        <span>Code</span>
+      </a>
+      {{- end }}
+    </p>
+    {{- end }}
+  </div>
+</article>

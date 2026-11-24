@@ -1,0 +1,58 @@
+{{- /* Font stack per style.
+     Fonts are self-hosted WOFF2 (latin subset) in themes/folio/static/fonts/.
+     Each style needs a display face and a body face; when they are the same
+     family only one file is loaded.
+
+     Usage: partial "fonts.html" "harbor"
+     Returns a slice of dicts: .url, .family, .weight, .display
+*/ -}}
+{{- $style := . -}}
+{{- /* Family -> file mapping. The variable file covers the whole weight range
+       of that family, so one file per family is enough. */ -}}
+{{- $families := dict
+  "manrope"       (dict "file" "manrope-latin-variable.woff2" "weights" "400 800" "name" "Manrope")
+  "fraunces"      (dict "file" "fraunces-latin-variable.woff2" "weights" "400 700" "name" "Fraunces")
+  "work-sans"     (dict "file" "work-sans-latin-variable.woff2" "weights" "400 700" "name" "Work Sans")
+  "space-grotesk" (dict "file" "space-grotesk-latin-variable.woff2" "weights" "300 700" "name" "Space Grotesk")
+  "figtree"       (dict "file" "figtree-latin-variable.woff2" "weights" "400 900" "name" "Figtree")
+  "ibm-plex-serif"  (dict "file" "ibm-plex-serif-latin-600.woff2" "weights" "600" "name" "IBM Plex Serif")
+  "ibm-plex-sans"   (dict "file" "ibm-plex-sans-latin-400.woff2" "weights" "400" "name" "IBM Plex Sans")
+  "sora"          (dict "file" "sora-latin-variable.woff2" "weights" "100 800" "name" "Sora")
+  "source-sans-3" (dict "file" "source-sans-3-latin-variable.woff2" "weights" "400 700" "name" "Source Sans 3")
+-}}
+{{- $styles := dict
+  "harbor"   (dict "displayFace" "manrope"       "bodyFace" "manrope")
+  "grove"    (dict "displayFace" "fraunces"      "bodyFace" "work-sans")
+  "orchid"   (dict "displayFace" "space-grotesk" "bodyFace" "figtree")
+  "graphite" (dict "displayFace" "ibm-plex-serif" "bodyFace" "ibm-plex-sans")
+  "saffron"  (dict "displayFace" "sora"          "bodyFace" "source-sans-3")
+  "nocturne" (dict "displayFace" "sora"          "bodyFace" "figtree")
+-}}
+{{- $conf := index $styles $style | default (index $styles "harbor") -}}
+{{- $displayFace := index $conf "displayFace" -}}
+{{- $bodyFace := index $conf "bodyFace" -}}
+{{- /* Display face first, so it can be preloaded. */ -}}
+{{- $faces := slice $displayFace $bodyFace -}}
+{{- $out := slice -}}
+{{- range $faces -}}
+  {{- $key := . -}}
+  {{- $f := index $families $key -}}
+  {{- if $f -}}
+    {{- $url := printf "/fonts/%s" $f.file -}}
+    {{- if not (fileExists (printf "static/fonts/%s" $f.file)) -}}
+      {{- /* Fall back to the Bunny CDN when the file is not shipped with the theme. */ -}}
+      {{- $url = printf "https://fonts.bunny.net/css?family=%s:400,600,800&display=swap" $key -}}
+    {{- end -}}
+    {{- $already := false -}}
+    {{- range $out }}{{ if eq .family $f.name }}{{ $already = true }}{{ end }}{{ end -}}
+    {{- if not $already -}}
+      {{- $out = $out | append (dict
+          "url" $url
+          "family" $f.name
+          "weights" $f.weights
+          "isDisplay" (eq $key $displayFace)
+        ) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}

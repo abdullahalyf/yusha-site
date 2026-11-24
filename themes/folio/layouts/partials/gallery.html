@@ -1,0 +1,75 @@
+{{- /* The "Moments" gallery.
+     Images live in personal/photos/gallery/ and are matched by their file
+     name. The order comes from the optional `gallery:` list in
+     profile.yaml, where each entry has a `file` and an optional `caption`:
+
+       gallery:
+         - file: "ride.jpg"
+           caption: "On the way to the hills"
+
+     Files that are not in that list are shown after the listed ones, in
+     name order, so a gallery works without any YAML at all. Captions are
+     optional; an image with no caption gets an empty caption.
+
+     Usage: partial "gallery.html" (dict "profile" $p)
+*/ -}}
+{{- $p := .profile -}}
+{{- $files := slice -}}
+{{- $captions := dict -}}
+{{- range $p.gallery -}}
+  {{- $name := .file | default "" -}}
+  {{- if $name -}}
+    {{- $files = $files | append $name -}}
+    {{- $captions = merge $captions (dict $name (.caption | default "")) -}}
+  {{- end -}}
+{{- end -}}
+{{- /* Every image in the folder, by file name without extension. */ -}}
+{{- $all := resources.Match "photos/gallery/*" -}}
+{{- $rest := slice -}}
+{{- range $all -}}
+  {{- $stem := path.BaseName .Name -}}
+  {{- if not (in $files $stem) -}}
+    {{- $rest = $rest | append $stem -}}
+  {{- end -}}
+{{- end -}}
+{{- $rest = sort $rest -}}
+{{- $files = $files | append $rest -}}
+{{- if $files -}}
+<section class="section section--gallery" id="gallery">
+  <div class="container">
+    <h2 class="section__title">Moments</h2>
+    <ul class="gallery">
+      {{- range $files }}
+      {{- $stem := . -}}
+      {{- $resource := resources.GetMatch (printf "photos/gallery/%s.*" $stem) -}}
+      {{- if $resource }}
+      {{- $caption := index $captions $stem | default "" -}}
+      {{- /* The thumbnail is a small resize; the lightbox opens the
+             full-size original, so the page never downloads the big file
+             until the visitor asks for it. */ -}}
+      {{- $thumb := $resource.Resize "640x webp q80" -}}
+      {{- $full := $resource.Resize "1600x webp q88" -}}
+      {{- $alt := $caption | default (printf "%s photo" $stem) -}}
+      <li class="gallery__item">
+        <button class="gallery__button" type="button"
+                data-lightbox-src="{{ $full.RelPermalink }}"
+                data-lightbox-alt="{{ $alt }}"
+                data-lightbox-caption="{{ $caption }}">
+          <img class="gallery__img"
+               src="{{ $thumb.RelPermalink }}"
+               width="{{ $thumb.Width }}" height="{{ $thumb.Height }}"
+               alt="{{ $alt }}"
+               loading="lazy" decoding="async">
+          {{- /* The caption repeats the image's alt text, so it is hidden
+                 from the screen reader to avoid reading it twice. */ -}}
+          {{- with $caption }}
+          <span class="gallery__caption" aria-hidden="true">{{ . }}</span>
+          {{- end }}
+        </button>
+      </li>
+      {{- end }}
+      {{- end }}
+    </ul>
+  </div>
+</section>
+{{- end -}}

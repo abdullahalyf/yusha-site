@@ -1,0 +1,81 @@
+/* ==========================================================================
+   folio — styles/graphite.css
+   Résumé, precise. A single blue accent on pure white. Serif display
+   (IBM Plex Serif) over a neutral sans body (IBM Plex Sans). Hero layout:
+   sidebar — a sticky profile column for the whole page.
+   ========================================================================== */
+
+:root {
+
+/* The faint wash behind the page: two very low-opacity radial
+   gradients in this style's own tones. The layer moves on `transform`
+   only, and the opacities are low enough that no word ever sits on a
+   different shade, so every contrast ratio is unchanged. */
+  --bg-glow-a: rgba(31, 107, 74, 0.10);
+  --bg-glow-b: rgba(31, 107, 74, 0.07);
+
+  --bg: #FFFFFF;
+  --surface: #F5F7F9;
+  --ink: #1F2328;
+  --muted: #59636E;
+  /* The design system gives #1F6FEB, but that is only 4.32:1 on --surface
+     (#F5F7F9) and accent text does sit on surfaces. Darkened within the same
+     hue to #1C66DB: 5.29:1 on --bg and 4.92:1 on --surface. */
+  --accent: #1C66DB;
+  --accent-ink: #FFFFFF;
+  --accent-strong: #1759C9;
+  --line: #E1E4E8;
+
+  --font-display: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display-weight: 600;
+}
+
+[data-theme="dark"] {
+
+/* The faint wash behind the page: two very low-opacity radial
+   gradients in this style's own tones. The layer moves on `transform`
+   only, and the opacities are low enough that no word ever sits on a
+   different shade, so every contrast ratio is unchanged. */
+  --bg-glow-a: rgba(111, 211, 163, 0.12);
+  --bg-glow-b: rgba(31, 107, 74, 0.13);
+
+  --bg: #15181D;
+  --surface: #1D2127;
+  --ink: #E6E9ED;
+  --muted: #9BA3AD;
+  --accent: #6CA4F8;
+  --accent-ink: #15181D;
+  --accent-strong: #93BAF9;
+  --line: #2D333B;
+}
+
+/* Graphite's hero photo is a square with a 12px radius. */
+[data-style="graphite"] .hero__media img {
+  border-radius: 12px;
+}
+
+/* In the sidebar column the photo is a résumé headshot, not a portrait:
+   a fixed square that keeps the name and the buttons above the fold. */
+@media (min-width: 1024px) {
+  .hero--sidebar .hero__media {
+    width: 100%;
+    max-width: 340px;
+    margin-bottom: var(--space-4);
+  }
+  .hero--sidebar .hero__media img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+}
+
+/* The sidebar column is narrow, so the name is set smaller than in the
+   other styles and the actions are compact. The sizes themselves live in
+   base.css under `.layout--sidebar`, so that they also apply when another
+   style is paired with the sidebar layout. */
+.hero--sidebar .hero__name {
+  font-weight: 600;
+}

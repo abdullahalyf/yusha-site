@@ -1,0 +1,50 @@
+{{- /* Image helper.
+     Looks a file up by its FIXED base name in assets/photos/, trying the
+     extensions a site owner is allowed to use. A missing file is not an
+     error here — the caller checks first and simply omits the image.
+
+     Usage: partial "img.html" (dict
+                "base"    "profile"        # or "project-1", "hobby-2"
+                "dir"     "blog"           # optional folder, default "photos"
+                "alt"    "Portrait of ..."
+                "class"  "hero__photo"
+                "width"  960
+                "height" 1200
+                "sizes"  "(max-width: 720px) 100vw, 420px"
+                "priority" false
+              )
+*/ -}}
+{{- $base := .base -}}
+{{- $dir := .dir | default "photos" -}}
+{{- $alt := .alt | default "" -}}
+{{- $class := .class | default "" -}}
+{{- $loading := .loading | default "lazy" -}}
+{{- $priority := .priority | default false -}}
+{{- $width := .width | default 960 -}}
+{{- $sizes := .sizes | default "100vw" -}}
+{{- $resource := resources.GetMatch (printf "%s/%s.*" $dir $base) -}}
+{{- if not $resource -}}
+  {{- errorf "no image found in assets/%s for the base name %q. Add the file as personal/%s/%s.jpg (or .jpeg, .png, .webp)." $dir $base $dir $base -}}
+{{- end -}}
+{{- /* Two rendered widths; never upscale past the source width. */ -}}
+{{- $w1 := 480 -}}
+{{- $w2 := 960 -}}
+{{- if lt $resource.Width 480 -}}
+  {{- $w1 = $resource.Width -}}
+{{- end -}}
+{{- if lt $resource.Width 960 -}}
+  {{- $w2 = $resource.Width -}}
+{{- end -}}
+{{- $src1 := $resource.Resize (printf "%dx webp q82" $w1) -}}
+{{- $src2 := $resource.Resize (printf "%dx webp q82" $w2) -}}
+{{- $ratio := div (float $resource.Height) (float $resource.Width) -}}
+{{- $h := int (math.Round (mul (float $width) $ratio)) -}}
+<img src="{{ $src1.RelPermalink }}"
+     srcset="{{ $src1.RelPermalink }} {{ $w1 }}w, {{ $src2.RelPermalink }} {{ $w2 }}w"
+     sizes="{{ $sizes }}"
+     width="{{ $width }}" height="{{ $h }}"
+     alt="{{ $alt }}"
+     class="{{ $class }}"
+     loading="{{ if $priority }}eager{{ else }}lazy{{ end }}"
+     {{ if $priority }}fetchpriority="high"{{ end }}
+     decoding="async">

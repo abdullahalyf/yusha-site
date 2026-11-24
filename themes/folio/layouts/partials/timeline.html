@@ -1,0 +1,54 @@
+{{- /* Vertical timeline for education and experience.
+     Usage: partial "timeline.html" (dict "items" $p.education "kind" "education") */ -}}
+{{- $items := .items -}}
+{{- $kind := .kind -}}
+{{- if $items }}
+<section class="section section--{{ $kind }}">
+  <div class="container">
+    <h2 class="section__title">{{ if eq $kind "education" }}Education{{ else }}Experience{{ end }}</h2>
+    <ol class="timeline">
+      {{- range $i, $item := $items }}
+      {{- /* An education entry may have a photo: the Nth entry uses
+             personal/photos/edu-N.*. It is optional; without the file the
+             entry is just text. */ -}}
+      {{- $photo := "" -}}
+      {{- if eq $kind "education" -}}
+        {{- $photo = printf "edu-%d" (add $i 1) -}}
+      {{- end -}}
+      {{- $image := "" -}}
+      {{- if $photo -}}
+        {{- $image = resources.GetMatch (printf "photos/%s.*" $photo) -}}
+      {{- end -}}
+      {{- $alt := printf "%s photo" $kind -}}
+      {{- if eq $kind "education" -}}
+        {{- $alt = printf "%s photo" .institution -}}
+      {{- else -}}
+        {{- $alt = printf "%s photo" .org -}}
+      {{- end -}}
+      <li class="timeline__item {{ if $image }}timeline__item--with-photo{{ end }}">
+        <span class="timeline__dot" aria-hidden="true"></span>
+        <p class="timeline__date">{{ .start }}{{ if .end }} — {{ .end }}{{ end }}</p>
+        <h3 class="timeline__title">
+          {{ if eq $kind "education" }}{{ .degree }}{{ else }}{{ .title }}{{ end }}
+        </h3>
+        <p class="timeline__org">{{ if eq $kind "education" }}{{ .institution }}{{ else }}{{ .org }}{{ end }}</p>
+        {{- with .detail }}
+        <p class="timeline__detail">{{ . }}</p>
+        {{- end }}
+        {{- with $image }}
+        <div class="timeline__media">
+          {{ partial "img.html" (dict
+              "base" $photo
+              "alt" $alt
+              "class" "timeline__img"
+              "width" 480
+              "sizes" "(max-width: 720px) 100vw, 200px"
+            ) }}
+        </div>
+        {{- end }}
+      </li>
+      {{- end }}
+    </ol>
+  </div>
+</section>
+{{- end }}

@@ -1,0 +1,64 @@
+{{- /* Contact block: email, phone, location, socials, CV.
+     Usage: partial "contact-block.html" (dict "profile" $p "heading" true)
+     The heading is optional: on the contact page the page title already says
+     "Contact", so repeating it would read as a mistake. */ -}}
+{{- $p := .profile -}}
+{{- $heading := .heading | default false -}}
+{{- $cv := partial "cv.html" $p -}}
+<section class="section section--contact">
+  <div class="container">
+    {{- if $heading }}
+    <h2 class="section__title">Contact</h2>
+    {{- end }}
+    {{- /* The contact avatar is optional: it only appears when the site has
+           an avatar file. It stands on its own here, so it gets the photo's
+           own alt text from the profile data. */}}
+    {{- with resources.GetMatch "photos/avatar.*" }}
+      {{- $a := .Fill "96x96 Center webp q85" }}
+      <img class="contact__avatar" src="{{ $a.RelPermalink }}"
+           width="{{ $a.Width }}" height="{{ $a.Height }}"
+           alt="{{ $p.photo_alt }}" loading="lazy" decoding="async">
+    {{- end }}
+    <ul class="contact-list">
+      {{- with $p.contact.email }}
+      <li class="contact-list__item">
+        {{ partial "icon.html" (dict "name" "mail" "class" "contact-list__icon") }}
+        <a href="mailto:{{ . }}">{{ . }}</a>
+      </li>
+      {{- end }}
+      {{- with $p.contact.phone }}
+      <li class="contact-list__item">
+        {{ partial "icon.html" (dict "name" "phone" "class" "contact-list__icon") }}
+        <a href="tel:{{ replaceRE "[^0-9+]" "" . }}">{{ . }}</a>
+      </li>
+      {{- end }}
+      {{- /* WhatsApp: optional. It appears when the profile gives a WhatsApp
+             number, and it is separate from the phone number because they
+             are often different numbers. */}}
+      {{- with $p.contact.whatsapp }}
+      <li class="contact-list__item">
+        {{ partial "icon.html" (dict "name" "whatsapp" "class" "contact-list__icon") }}
+        <a href="https://wa.me/{{ replaceRE "[^0-9]" "" . }}" rel="noopener noreferrer">WhatsApp</a>
+      </li>
+      {{- end }}
+      {{- with $p.location }}
+      <li class="contact-list__item">
+        {{ partial "icon.html" (dict "name" "location" "class" "contact-list__icon") }}
+        <span>{{ . }}</span>
+      </li>
+      {{- end }}
+    </ul>
+    {{- with $p.contact.note }}
+    <p class="contact-note">{{ . }}</p>
+    {{- end }}
+    {{ partial "socials.html" (dict "socials" $p.socials "show_empty" $p.show_empty_socials) }}
+    {{- if $cv }}
+    <p class="contact-actions">
+      <a class="btn btn--primary" href="{{ $cv }}" download>
+        {{ partial "icon.html" (dict "name" "download" "class" "btn__icon") }}
+        <span>Download CV</span>
+      </a>
+    </p>
+    {{- end }}
+  </div>
+</section>

@@ -1,0 +1,19 @@
+{{- /* Resolve the CV link.
+     Priority: an explicit cv_url in profile.yaml, then personal/cv.pdf.
+     The PDF is mounted into static/, so it is referenced by its static path
+     rather than through the asset pipeline.
+     Returns the URL string, or "" when there is no CV at all (the button is
+     then hidden entirely).
+*/ -}}
+{{- $p := . -}}
+{{- $url := "" -}}
+{{- with $p.cv_url -}}
+  {{- $url = . -}}
+{{- end -}}
+{{- if not $url -}}
+  {{- /* The PDF is mounted into static/, so it is served from /cv.pdf. */ -}}
+  {{- if fileExists "personal/cv.pdf" -}}
+    {{- $url = "cv.pdf" | relURL -}}
+  {{- end -}}
+{{- end -}}
+{{- return $url -}}

@@ -1,0 +1,131 @@
+/* ==========================================================================
+   folio — styles/orchid.css
+   Creative, confident. Magenta accent on a pale lilac. Geometric display
+   (Space Grotesk) over a friendly sans body (Figtree). Hero layout:
+   typographic.
+   ========================================================================== */
+
+:root {
+
+/* The faint wash behind the page: two very low-opacity radial
+   gradients in this style's own tones. The layer moves on `transform`
+   only, and the opacities are low enough that no word ever sits on a
+   different shade, so every contrast ratio is unchanged. */
+  --bg-glow-a: rgba(180, 35, 107, 0.09);
+  --bg-glow-b: rgba(242, 122, 176, 0.10);
+
+  --bg: #FAF7FB;
+  --surface: #FFFFFF;
+  --ink: #2A1733;
+  --muted: #6A5872;
+  --accent: #B4236B;
+  --accent-ink: #FFFFFF;
+  --accent-strong: #931C55;
+  --line: #E9DFEC;
+
+  --font-display: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display-weight: 700;
+}
+
+[data-theme="dark"] {
+
+/* The faint wash behind the page: two very low-opacity radial
+   gradients in this style's own tones. The layer moves on `transform`
+   only, and the opacities are low enough that no word ever sits on a
+   different shade, so every contrast ratio is unchanged. */
+  --bg-glow-a: rgba(242, 122, 176, 0.13);
+  --bg-glow-b: rgba(180, 35, 107, 0.12);
+
+  --bg: #170F1B;
+  --surface: #221827;
+  --ink: #F1E8F4;
+  --muted: #B7A6BE;
+  --accent: #F27AB0;
+  --accent-ink: #170F1B;
+  --accent-strong: #F79BC4;
+  --line: #352A3A;
+}
+
+/* Orchid's hero photo is a small 96px circle set inline with the text. */
+[data-style="orchid"] .hero__media img {
+  border-radius: 50%;
+}
+
+/* Typographic hero: the name is the whole hero. It runs the full width of
+   the container and the photo sits next to the role line. */
+.hero--typographic .hero__inner {
+  gap: var(--space-5);
+}
+
+.hero--typographic .hero__name {
+  font-size: clamp(3rem, 10vw, 8rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  max-width: 18ch;
+  margin-bottom: var(--space-4);
+}
+
+.hero--typographic .hero__role {
+  font-size: 1.25rem;
+  color: var(--accent);
+  margin-bottom: var(--space-3);
+}
+
+.hero--typographic .hero__now {
+  max-width: 52ch;
+}
+
+/* On small screens the photo sits inline with the name, so the hero still
+   reads as "photo → name → text" without a big empty block above it. */
+@media (max-width: 899px) {
+  .hero--typographic .hero__inner {
+    grid-template-columns: 96px minmax(0, 1fr);
+    align-items: start;
+    column-gap: var(--space-4);
+    row-gap: var(--space-4);
+  }
+
+  .hero--typographic .hero__media--inline {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .hero--typographic .hero__text {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .hero--typographic .hero__name {
+    font-size: clamp(2.25rem, 11vw, 3.5rem);
+    margin-bottom: var(--space-2);
+  }
+}
+
+/* The photo sits inline with the text block on wide screens, so the name
+   keeps the full measure of the page. */
+@media (min-width: 900px) {
+  .hero--typographic .hero__inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    column-gap: var(--space-6);
+  }
+
+  .hero--typographic .hero__text { grid-column: 1; }
+  .hero--typographic .hero__media {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+  }
+}
+
+.hero--typographic .hero__media--inline {
+  width: 96px;
+}
+
+.hero--typographic .hero__media--inline img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+}

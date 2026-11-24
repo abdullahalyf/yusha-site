@@ -1,0 +1,9 @@
+/public/
+/public-*/
+/resources/_gen/
+.hugo_build.lock
+node_modules/
+*.log
+.DS_Store
+__pycache__/
+/.scratch/

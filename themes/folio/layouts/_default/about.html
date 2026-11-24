@@ -1,0 +1,105 @@
+{{ define "main" }}
+{{- $p := hugo.Data.profile -}}
+<section class="page-head">
+  <div class="container">
+    <h1 class="page-head__title">{{ .Title }}</h1>
+    {{ partial "page-lead.html" . }}
+  </div>
+</section>
+
+{{- /* Full bio. */}}
+{{- with $p.bio }}
+<section class="section">
+  <div class="container">
+    <div class="bio">
+      {{ . | markdownify }}
+    </div>
+  </div>
+</section>
+{{- end }}
+
+{{- /* The quick facts, and the academics list when there is one. On the
+     home page these sit under the hero; here they belong with the rest of
+     the detail, so the grades stay on this page even when the home page
+     leaves them out. */}}
+{{- $aboutFacts := slice -}}
+{{- range $p.academics -}}
+  {{- $aboutFacts = $aboutFacts | append . -}}
+{{- end -}}
+{{- range $p.facts -}}
+  {{- $aboutFacts = $aboutFacts | append . -}}
+{{- end -}}
+{{- with $aboutFacts }}
+<section class="section section--facts">
+  <div class="container">
+    <ul class="facts">
+      {{- range . }}<li class="facts__item">{{ . }}</li>{{ end }}
+    </ul>
+  </div>
+</section>
+{{- end }}
+
+{{- /* Optional semester results, as bars. The same block the home page
+     uses; here it sits under the bio, where a reader who wants the
+     detail will be looking. */}}
+{{ partial "grades.html" $p }}
+
+{{ partial "timeline.html" (dict "items" $p.education "kind" "education") }}
+{{ partial "timeline.html" (dict "items" $p.experience "kind" "experience") }}
+
+{{- /* Achievements: year + title + issuer rows, with an optional
+     certificate image that opens in the lightbox. */}}
+{{ partial "achievements.html" (dict "items" $p.achievements) }}
+
+{{- /* Languages. */}}
+{{- with $p.languages }}
+<section class="section section--languages">
+  <div class="container">
+    <h2 class="section__title">Languages</h2>
+    <ul class="skills__items">
+      {{- range . }}<li class="pill">{{ . }}</li>{{ end }}
+    </ul>
+  </div>
+</section>
+{{- end }}
+
+{{- /* Hobbies: short paragraphs, optional square photo. The photo is looked
+     up by fixed base name: the Nth hobby uses personal/photos/hobby-N.*. */}}
+{{- with $p.hobbies }}
+<section class="section section--hobbies">
+  <div class="container">
+    <h2 class="section__title">Outside work</h2>
+    <div class="hobbies">
+      {{- range $i, $hobby := . }}
+      <div class="hobby">
+        {{- with resources.GetMatch (printf "photos/hobby-%d.*" (add $i 1)) }}
+        <div class="hobby__media">
+          {{ partial "img.html" (dict "base" (printf "hobby-%d" (add $i 1)) "alt" (printf "%s photo" $hobby.title) "class" "hobby__img" "width" 600 "sizes" "(max-width: 720px) 40vw, 180px") }}
+        </div>
+        {{- end }}
+        <div class="hobby__body">
+          <h3 class="hobby__title">{{ $hobby.title }}</h3>
+          <p class="hobby__text">{{ $hobby.text }}</p>
+        </div>
+      </div>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}
+
+{{- /* Moments: the photo gallery. Hidden when the folder is empty. */}}
+{{ partial "gallery.html" (dict "profile" $p) }}
+
+{{- $cv := partial "cv.html" $p }}
+{{- if $cv }}
+<section class="section section--cv">
+  <div class="container">
+    <a class="btn btn--primary" href="{{ $cv }}" download>
+      {{ partial "icon.html" (dict "name" "download" "class" "btn__icon") }}
+      <span>Download CV</span>
+    </a>
+  </div>
+</section>
+{{- end }}
+{{ end }}

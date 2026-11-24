@@ -1,0 +1,118 @@
+<!doctype html>
+<!-- Throwaway mockup for personal/photos/project-4.jpg (Study Deck).
+     Regenerate with: python tools/mockups/shoot_mockups.py -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Study Deck</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #fbfaf7; color: #221e1a;
+    font: 15px/1.6 -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .nav {
+    display: flex; align-items: center; gap: 22px;
+    padding: 15px 30px; border-bottom: 1px solid #e8e2d8; background: #fffdf9;
+  }
+  .logo { font-weight: 700; font-size: 18px; letter-spacing: -.2px; }
+  .logo b { color: #b4622c; }
+  nav a { color: #6b6259; text-decoration: none; font-size: 14px; }
+  nav a.on { color: #221e1a; font-weight: 650; }
+  .nav .cta {
+    margin-left: auto; background: #b4622c; color: #fff; border: 0;
+    padding: 9px 18px; border-radius: 7px; font-size: 14px; font-weight: 600;
+  }
+  .hero { display: flex; gap: 46px; padding: 46px 30px 40px; align-items: center; }
+  .hero .copy { flex: 1; }
+  .eyebrow {
+    color: #b4622c; font-size: 12.5px; font-weight: 700;
+    letter-spacing: 1.1px; text-transform: uppercase; margin-bottom: 13px;
+  }
+  .hero h1 {
+    margin: 0 0 16px; font-size: 40px; line-height: 1.12; font-weight: 700; letter-spacing: -.8px;
+  }
+  .hero p { margin: 0 0 24px; font-size: 17px; color: #5f564d; max-width: 46ch; }
+  .btns { display: flex; gap: 12px; }
+  .btns a {
+    padding: 12px 22px; border-radius: 8px; font-size: 15px; font-weight: 620; text-decoration: none;
+  }
+  .btns .a { background: #b4622c; color: #fff; }
+  .btns .b { border: 1.5px solid #ddd4c6; color: #221e1a; }
+  .deck { width: 430px; flex: none; }
+  .dcard {
+    background: #fff; border: 1px solid #e6dfd3; border-radius: 13px;
+    padding: 22px 24px; box-shadow: 0 3px 6px rgba(60,45,25,.05), 0 16px 36px -18px rgba(60,45,25,.22);
+  }
+  .dcard .tag {
+    display: inline-block; background: #f6ede2; color: #b4622c;
+    border-radius: 5px; padding: 3px 10px; font-size: 11.5px; font-weight: 650;
+  }
+  .dcard h3 { margin: 13px 0 11px; font-size: 19px; line-height: 1.3; }
+  .dcard p { margin: 0 0 18px; color: #5f564d; font-size: 14.5px; }
+  .answers { display: flex; flex-direction: column; gap: 8px; }
+  .ans {
+    border: 1.5px solid #e6dfd3; border-radius: 8px; padding: 10px 14px;
+    font-size: 14px; color: #5f564d;
+  }
+  .ans.right { border-color: #5aa06f; background: #f1f9f3; color: #2c6b41; }
+  .ans.wrong { border-color: #d99a8a; background: #fbf1ee; color: #9c4a34; }
+  .dfoot { display: flex; justify-content: space-between; margin-top: 18px; font-size: 12.5px; color: #9a9086; }
+  .strip { display: flex; gap: 42px; padding: 30px; background: #f4efe5; border-top: 1px solid #e8e2d8; }
+  .feat { flex: 1; }
+  .feat h4 { margin: 0 0 7px; font-size: 16px; }
+  .feat p { margin: 0; color: #6b6259; font-size: 14px; }
+  .feat .n {
+    width: 30px; height: 30px; border-radius: 8px; background: #b4622c; color: #fff;
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;
+    margin-bottom: 11px;
+  }
+</style>
+</head>
+<body>
+  <div class="nav">
+    <div class="logo">Study<b>Deck</b></div>
+    <nav>
+      <a href="#" class="on">Decks</a>
+      <a href="#">Shared decks</a>
+      <a href="#">Leaderboard</a>
+      <a href="#">Docs</a>
+    </nav>
+    <button class="cta">Sign in</button>
+  </div>
+
+  <div class="hero">
+    <div class="copy">
+      <div class="eyebrow">Spaced repetition for courses</div>
+      <h1>Stop re-reading notes the night before the exam.</h1>
+      <p>Import a deck of questions, answer ten a day, and let the scheduler push back the ones you keep getting wrong. Works with a shared deck, so the whole class can add questions.</p>
+      <div class="btns">
+        <a href="#" class="a">Start with a deck</a>
+        <a href="#" class="b">See an example deck</a>
+      </div>
+    </div>
+
+    <div class="deck">
+      <div class="dcard">
+        <span class="tag">Algorithms &middot; Card 14 of 60</span>
+        <h3>What is the average case time complexity of quicksort?</h3>
+        <p>Pick the option that matches the standard analysis.</p>
+        <div class="answers">
+          <div class="ans">O(n log n) &mdash; the same as the worst case</div>
+          <div class="ans right">O(n log n) &mdash; when the pivot splits evenly</div>
+          <div class="ans">O(n&sup2;) &mdash; when the array is already sorted</div>
+          <div class="ans">O(log n) &mdash; one level of recursion</div>
+        </div>
+        <div class="dfoot"><span>Next card in 12 minutes</span><span>14 / 60</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="feat"><div class="n">1</div><h4>Shared decks</h4><p>Every classmate can add questions to the same deck. Duplicates get merged.</p></div>
+    <div class="feat"><div class="n">2</div><h4>Scheduling that adapts</h4><p>Cards you miss come back the same day. Cards you know drift out to weeks.</p></div>
+    <div class="feat"><div class="n">3</div><h4>Accuracy you can read</h4><p>A weekly chart shows which topics still need work before the exam.</p></div>
+  </div>
+</body>
+</html>

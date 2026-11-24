@@ -1,0 +1,100 @@
+{{ define "main" }}
+{{- $p := hugo.Data.profile -}}
+{{- $style := site.Params.style | default "harbor" -}}
+{{- $isBento := or (eq site.Params.layout "bento") (and (not site.Params.layout) (eq $style "nocturne")) -}}
+{{- if $isBento }}{{ partial "home-bento.html" $p }}{{ else }}{{ partial "hero.html" $p }}{{ end }}
+
+{{- /* The order of the sections below the hero is set by `home_sections:`
+     in profile.yaml. The default is the order used here, so a site that
+     says nothing gets this one. A section that is not in the list is not
+     rendered at all, so a site owner can leave out anything they do not
+     want on the front page and put the rest in any order they like.
+
+       home_sections:
+         - brief
+         - skills
+         - projects
+         - moments
+         - achievements
+         - grades
+         - contact
+
+     The known names are brief, skills, projects, moments, achievements,
+     grades, contact and writing. */}}
+{{- $defaultOrder := slice "brief" "skills" "projects" "moments" "achievements" "grades" "contact" -}}
+{{- if $isBento }}{{ $defaultOrder = slice "moments" "writing" "contact" }}{{ end -}}
+{{- $order := $p.home_sections | default $defaultOrder -}}
+
+{{- /* Facts row — a plain inline list, no separators.
+     `highlight_academics: true` puts the optional `academics:` list first,
+     so a CGPA or GPA is the first thing a visitor reads. */}}
+{{- $facts := slice -}}
+{{- if $p.highlight_academics -}}
+  {{- range $p.academics -}}
+    {{- $facts = $facts | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- range $p.facts -}}
+  {{- $facts = $facts | append . -}}
+{{- end -}}
+
+{{- range $order }}
+  {{- $section := . -}}
+  {{- if eq $section "brief" }}
+    {{ partial "home-brief.html" $p }}
+  {{- else if eq $section "facts" }}
+    {{- with $facts }}
+    <section class="section section--facts">
+      <div class="container">
+        <ul class="facts">
+          {{- range . }}<li class="facts__item">{{ . }}</li>{{ end }}
+        </ul>
+      </div>
+    </section>
+    {{- end }}
+  {{- else if eq $section "skills" }}
+    {{ partial "skills.html" (dict "groups" $p.skills "limit" 2 "title" "Skills") }}
+  {{- else if eq $section "projects" }}
+    {{ partial "home-projects.html" $p }}
+  {{- else if eq $section "moments" }}
+    {{ partial "home-moments.html" $p }}
+  {{- else if eq $section "achievements" }}
+    {{ partial "achievements.html" (dict "items" $p.achievements) }}
+  {{- else if eq $section "grades" }}
+    {{ partial "grades.html" $p }}
+  {{- else if eq $section "contact" }}
+    {{ partial "contact-block.html" (dict "profile" $p "heading" true) }}
+  {{- else if eq $section "writing" }}
+    {{- /* Latest blog posts — hidden entirely when there are none. */}}
+    {{- $posts := where site.RegularPages "Section" "blog" -}}
+    {{- if $posts }}
+    {{- $posts = first 2 $posts }}
+    <section class="section section--writing">
+      <div class="container">
+        <h2 class="section__title">Writing</h2>
+        <ul class="post-list">
+          {{- range $posts }}
+          {{- $cover := .Params.cover | default "" }}
+          <li class="post-list__item post-list__item--cover">
+            {{- with $cover }}
+              {{- with resources.GetMatch (printf "blog/%s.*" .) }}
+                <a class="post-list__thumb" href="{{ .RelPermalink }}" tabindex="-1" aria-hidden="true">
+                  {{ partial "img.html" (dict "base" $cover "dir" "blog" "alt" "" "class" "post-list__thumb-img" "width" 360 "sizes" "(max-width: 760px) 100vw, 240px") }}
+                </a>
+              {{- end }}
+            {{- end }}
+            <div class="post-list__body">
+              <p class="post-list__meta">{{ .Date.Format "2 January 2006" }}</p>
+              <h3 class="post-list__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+              {{- with .Params.summary }}<p class="post-list__summary">{{ . }}</p>{{ end }}
+            </div>
+          </li>
+          {{- end }}
+        </ul>
+        <p class="section__more"><a class="link" href="{{ "blog/" | relURL }}"><span>All posts</span></a></p>
+      </div>
+    </section>
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{ end }}

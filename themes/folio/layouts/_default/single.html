@@ -1,0 +1,46 @@
+{{ define "main" }}
+{{- $cover := .Params.cover | default "" -}}
+<article class="post">
+  <header class="page-head page-head--post">
+    <div class="container container--narrow">
+      <h1 class="page-head__title">{{ .Title }}</h1>
+      <p class="post__meta">
+        {{- /* The byline avatar is optional: it only appears when the site
+               has an avatar file. It repeats the site owner, whose name is
+               already on the page, so it is decorative. */}}
+        {{- with resources.GetMatch "photos/avatar.*" }}
+          {{- $a := .Fill "40x40 Center webp q85" }}
+          <span class="post__avatar-wrap" aria-hidden="true">
+            <img class="post__avatar" src="{{ $a.RelPermalink }}"
+                 width="{{ $a.Width }}" height="{{ $a.Height }}"
+                 alt="" loading="lazy" decoding="async">
+          </span>
+        {{- end }}
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+        <span>{{ .ReadingTime }} min read</span>
+      </p>
+      {{- with .Params.summary }}<p class="page-head__lead">{{ . }}</p>{{ end }}
+    </div>
+  </header>
+  {{- /* Cover image: optional. A missing file simply means no cover. */}}
+  {{- with $cover }}
+    {{- with resources.GetMatch (printf "blog/%s.*" .) }}
+      <div class="post-cover">
+        <div class="container container--narrow">
+          {{ partial "img.html" (dict "base" $cover "dir" "blog" "alt" (printf "Cover image for %s" $.Title) "class" "post-cover__img" "width" 1200 "sizes" "(max-width: 780px) 100vw, 740px" "priority" true) }}
+        </div>
+      </div>
+    {{- end }}
+  {{- end }}
+  <div class="section">
+    <div class="container container--narrow prose">
+      {{ .Content }}
+    </div>
+  </div>
+  <nav class="post-nav" aria-label="Blog">
+    <div class="container container--narrow">
+      <a class="link" href="{{ "blog/" | relURL }}"><span>All posts</span></a>
+    </div>
+  </nav>
+</article>
+{{ end }}

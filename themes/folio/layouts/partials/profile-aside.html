@@ -1,0 +1,33 @@
+{{- /* The profile column of the sidebar layout: photo, name, role, the "now"
+     line and the actions. On the home page it is part of the hero; on every
+     other page it stands on its own, so the sidebar reads as a résumé column
+     for the whole site.
+
+     Usage: partial "profile-aside.html" (dict "context" $ "heading" true|false)
+     The name is an <h1> only when it is the page's main heading — on the
+     other pages the page already has its own <h1>. */ -}}
+{{- $p := hugo.Data.profile -}}
+{{- $heading := .heading | default false -}}
+{{- $photo := partial "img.html" (dict
+      "base" "profile"
+      "alt" ($p.photo_alt | default (printf "Portrait of %s" $p.name))
+      "class" "hero__photo-img"
+      "width" 960
+      "sizes" "(max-width: 720px) 78vw, (max-width: 1100px) 340px, 320px"
+      "priority" true
+    ) -}}
+<aside class="hero__aside">
+  <div class="hero__media">
+    {{ $photo }}
+  </div>
+  <div class="hero__text hero__text--compact">
+    {{- if $heading }}
+    <h1 class="hero__name">{{ $p.name }}</h1>
+    {{- else }}
+    <p class="hero__name">{{ $p.name }}</p>
+    {{- end }}
+    <p class="hero__role">{{ $p.role }}</p>
+    <p class="hero__now">{{ $p.now }}</p>
+    {{ partial "hero-actions.html" $p }}
+  </div>
+</aside>

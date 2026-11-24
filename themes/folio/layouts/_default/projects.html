@@ -1,0 +1,35 @@
+{{ define "main" }}
+{{- $p := hugo.Data.profile -}}
+<section class="page-head">
+  <div class="container">
+    <h1 class="page-head__title">{{ .Title }}</h1>
+    {{ partial "page-lead.html" . }}
+  </div>
+</section>
+
+{{- with $p.projects }}
+<section class="section section--projects">
+  <div class="container">
+    <div class="project-grid">
+      {{- range $i, $proj := . }}
+      {{ partial "project.html" (dict "item" $proj "index" $i "mode" "grid") }}
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- else }}
+{{- /* No projects yet. The page is not left empty: the skills are the
+       real content here, and a short note says where the rest is. */}}
+<section class="section section--projects">
+  <div class="container">
+    <p class="empty-note">
+      The course projects are still being written up. What is already here
+      is the work behind them: the languages, the problem solving, and the
+      results that came out of it.
+    </p>
+  </div>
+</section>
+{{- end }}
+
+{{ partial "skills.html" (dict "groups" $p.skills "title" "Skills") }}
+{{ end }}

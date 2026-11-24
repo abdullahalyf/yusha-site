@@ -1,0 +1,33 @@
+{{- /* Social links as icon + text. Usage: partial "socials.html" (dict
+     "socials" $p.socials "show_empty" $p.show_empty_socials)
+
+     An entry without a `url` is a placeholder. Whether that placeholder is
+     shown at all depends on `show_empty_socials` in profile.yaml, which is
+     false by default: for most friends a half-empty social row is noise,
+     so the entry is simply left out. Set it to true and the entry is shown
+     as muted text with a "soon" note — the reader can see where the link
+     will be, and nothing goes nowhere. */ -}}
+{{- $socials := .socials -}}
+{{- $showEmpty := .show_empty | default false -}}
+{{- if $socials }}
+<ul class="socials">
+  {{- range $socials }}
+  {{- if or .url $showEmpty }}
+  <li>
+    {{- if .url }}
+    <a class="social" href="{{ .url }}" rel="noopener noreferrer">
+      {{ partial "icon.html" (dict "name" .name "class" "social__icon") }}
+      <span class="social__name">{{ .name }}</span>
+    </a>
+    {{- else }}
+    <span class="social social--soon" aria-disabled="true">
+      {{ partial "icon.html" (dict "name" .name "class" "social__icon") }}
+      <span class="social__name">{{ .name }}</span>
+      <span class="social__soon">soon</span>
+    </span>
+    {{- end }}
+  </li>
+  {{- end }}
+  {{- end }}
+</ul>
+{{- end }}

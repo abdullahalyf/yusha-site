@@ -1,0 +1,40 @@
+{{- /* Render hook for markdown images.
+
+     A post refers to an image by its path inside assets/, for example
+     `blog/my-post-body.jpg`. Hugo resolves that against the mounted assets
+     folders, so the file goes through the same image pipeline as the photos:
+     two WebP widths, explicit dimensions so the browser can reserve the
+     space, and lazy loading below the fold.
+
+     An image that cannot be found is left as a plain <img> pointing at the
+     original path. That way a typo shows a broken image rather than
+     failing the whole build.
+*/ -}}
+{{- $src := .Destination -}}
+{{- $alt := .Text | plainify -}}
+{{- $resource := "" -}}
+{{- if not (urls.Parse $src).IsAbs -}}
+  {{- $resource = resources.GetMatch $src -}}
+{{- end -}}
+{{- if $resource -}}
+  {{- if and (eq $resource.ResourceType "image") (gt $resource.Width 0) -}}
+    {{- $w1 := 480 -}}
+    {{- $w2 := 960 -}}
+    {{- if lt $resource.Width 480 -}}{{- $w1 = $resource.Width -}}{{- end -}}
+    {{- if lt $resource.Width 960 -}}{{- $w2 = $resource.Width -}}{{- end -}}
+    {{- $src1 := $resource.Resize (printf "%dx webp q82" $w1) -}}
+    {{- $src2 := $resource.Resize (printf "%dx webp q82" $w2) -}}
+    {{- $ratio := div (float $resource.Height) (float $resource.Width) -}}
+    {{- $h := int (math.Round (mul (float $w2) $ratio)) -}}
+    <img src="{{ $src1.RelPermalink }}"
+         srcset="{{ $src1.RelPermalink }} {{ $w1 }}w, {{ $src2.RelPermalink }} {{ $w2 }}w"
+         sizes="(max-width: 740px) 100vw, 740px"
+         width="{{ $w2 }}" height="{{ $h }}"
+         alt="{{ $alt }}"
+         loading="lazy" decoding="async">
+  {{- else -}}
+    <img src="{{ $src.RelPermalink }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+  {{- end -}}
+{{- else -}}
+  <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+{{- end -}}

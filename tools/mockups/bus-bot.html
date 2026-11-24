@@ -1,0 +1,158 @@
+<!doctype html>
+<!-- Throwaway mockup for personal/photos/project-2.jpg (Bus Time Bot).
+     Regenerate with: python tools/mockups/shoot_mockups.py -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bus Time Bot</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #eef1f6; color: #17212f;
+    font: 15px/1.55 -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bar {
+    background: #1f7ae0; color: #fff; padding: 15px 26px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo {
+    width: 34px; height: 34px; border-radius: 9px; background: rgba(255,255,255,.2);
+    display: flex; align-items: center; justify-content: center; font-size: 19px;
+  }
+  .bar h1 { margin: 0; font-size: 17px; font-weight: 650; }
+  .bar small { color: #c8e0fb; font-size: 12.5px; }
+  .body { display: flex; gap: 20px; padding: 22px 26px; align-items: flex-start; }
+  .chat { flex: 1; }
+  .thread {
+    background: #fff; border: 1px solid #dee4ec; border-radius: 12px;
+    padding: 20px; min-height: 470px;
+  }
+  .msg { margin-bottom: 14px; display: flex; }
+  .msg.me { justify-content: flex-end; }
+  .bubble {
+    max-width: 460px; padding: 11px 15px; border-radius: 12px; font-size: 14.5px;
+  }
+  .bot .bubble { background: #f1f4f8; border: 1px solid #e4e9f0; border-bottom-left-radius: 4px; }
+  .me .bubble { background: #1f7ae0; color: #fff; border-bottom-right-radius: 4px; }
+  .time { font-size: 11px; color: #9aa6b6; margin-top: 4px; }
+  .me .time { text-align: right; }
+  .table {
+    background: #fff; border: 1px solid #dee4ec; border-radius: 10px;
+    overflow: hidden; margin-top: 10px; font-size: 13.5px;
+  }
+  .table .row {
+    display: grid; grid-template-columns: 1.4fr .8fr .9fr;
+    padding: 9px 14px; border-bottom: 1px solid #eef1f5; align-items: center;
+  }
+  .table .row:last-child { border-bottom: 0; }
+  .table .head { background: #f6f8fb; font-weight: 650; color: #55637a; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+  .route { font-weight: 600; }
+  .pill {
+    display: inline-block; padding: 2px 9px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 600;
+  }
+  .soon { background: #e6f7ee; color: #177a4c; }
+  .later { background: #eef1f6; color: #5c6b80; }
+  .side { width: 262px; }
+  .panel { background: #fff; border: 1px solid #dee4ec; border-radius: 10px; padding: 16px; margin-bottom: 13px; }
+  .panel h3 { margin: 0 0 11px; font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: #78859a; }
+  .cmd { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; font-size: 13.5px; border-bottom: 1px solid #eef1f5; }
+  .cmd:last-child { border-bottom: 0; }
+  code { background: #eef1f6; border-radius: 4px; padding: 1px 6px; font-size: 12.5px; font-family: "SF Mono", Consolas, monospace; color: #1f7ae0; }
+  .bar2 { display: flex; gap: 10px; margin-top: 14px; }
+  .bar2 input {
+    flex: 1; padding: 11px 15px; border-radius: 9px; border: 1px solid #d5dde6;
+    font-size: 14px; background: #fff; color: #17212f;
+  }
+  .bar2 button {
+    background: #1f7ae0; color: #fff; border: 0; border-radius: 9px;
+    padding: 0 22px; font-size: 14px; font-weight: 600;
+  }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <div class="logo">&#128668;</div>
+    <div>
+      <h1>Bus Time Bot</h1>
+      <small>Ask for the next university bus from any stop</small>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="chat">
+      <div class="thread">
+        <div class="msg bot">
+          <div>
+            <div class="bubble">Hi! Send me a stop name and I'll tell you when the next bus leaves. For example: <code>/next Dhanmondi</code></div>
+            <div class="time">09:02</div>
+          </div>
+        </div>
+
+        <div class="msg me">
+          <div>
+            <div class="bubble">/next Dhanmondi</div>
+            <div class="time">09:03</div>
+          </div>
+        </div>
+
+        <div class="msg bot">
+          <div>
+            <div class="bubble">Next bus from <b>Dhanmondi</b> leaves in <b>6 minutes</b>, at 09:09. Route 5, towards Savar. It usually arrives at DIU around 09:41.</div>
+            <div class="table">
+              <div class="row head"><span>Route</span><span>Leaves</span><span>Arrives</span></div>
+              <div class="row"><span class="route">5 &mdash; Dhanmondi</span><span><span class="pill soon">09:09</span></span><span>09:41</span></div>
+              <div class="row"><span class="route">5 &mdash; Dhanmondi</span><span><span class="pill later">09:39</span></span><span>10:11</span></div>
+              <div class="row"><span class="route">12 &mdash; Dhanmondi</span><span><span class="pill later">09:24</span></span><span>10:02</span></div>
+            </div>
+            <div class="time">09:03</div>
+          </div>
+        </div>
+
+        <div class="msg me">
+          <div>
+            <div class="bubble">how late is route 5 usually on fridays?</div>
+            <div class="time">09:05</div>
+          </div>
+        </div>
+
+        <div class="msg bot">
+          <div>
+            <div class="bubble">On Fridays route 5 runs about <b>9 minutes late</b> on average, mostly because of the Mirpur stretch. I'd plan for 09:18 rather than 09:09.</div>
+            <div class="time">09:05</div>
+          </div>
+        </div>
+
+        <div class="msg me">
+          <div>
+            <div class="bubble">thanks</div>
+            <div class="time">09:06</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bar2">
+        <input value="type a stop name..." >
+        <button>Send</button>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="panel">
+        <h3>Commands</h3>
+        <div class="cmd"><code>/next</code><span>next bus</span></div>
+        <div class="cmd"><code>/all</code><span>all routes</span></div>
+        <div class="cmd"><code>/delay</code><span>average delay</span></div>
+        <div class="cmd"><code>/set</code><span>home stop</span></div>
+      </div>
+      <div class="panel">
+        <h3>Last 7 days</h3>
+        <div class="cmd"><span>Questions answered</span><b>3,140</b></div>
+        <div class="cmd"><span>Active students</span><b>620</b></div>
+        <div class="cmd"><span>Avg. reply time</span><b>0.4 s</b></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+/* ==========================================================================
+   folio — styles/harbor.css
+   Calm, engineering. Teal accent on a cool off-white. Hero layout: split.
+   Every token below was contrast-checked (see docs/reports/TASK-01-report.md):
+     light: ink 15.4:1, muted 5.96:1, accent 5.04:1 on --bg
+     dark:  ink 15.1:1, muted 7.45:1, accent 9.21:1 on --bg
+   ========================================================================== */
+
+:root {
+
+/* The faint wash behind the page: two very low-opacity radial
+   gradients in this style's own tones. The layer moves on `transform`
+   only, and the opacities are low enough that no word ever sits on a
+   different shade, so every contrast ratio is unchanged. */
+  --bg-glow-a: rgba(14, 116, 144, 0.10);
+  --bg-glow-b: rgba(92, 200, 221, 0.09);
+
+  --bg: #F6F8FB;
+  --surface: #FFFFFF;
+  --ink: #142033;
+  --muted: #52607A;
+  --accent: #0E7490;
+  --accent-ink: #FFFFFF;
+  --accent-strong: #0B5C73;
+  --line: #DCE3EC;
+
+  --font-display: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display-weight: 800;
+}
+
+[data-theme="dark"] {
+
+/* The faint wash behind the page: two very low-opacity radial
+   gradients in this style's own tones. The layer moves on `transform`
+   only, and the opacities are low enough that no word ever sits on a
+   different shade, so every contrast ratio is unchanged. */
+  --bg-glow-a: rgba(92, 200, 221, 0.13);
+  --bg-glow-b: rgba(14, 116, 144, 0.11);
+
+  --bg: #0F1724;
+  --surface: #172234;
+  --ink: #E6ECF5;
+  --muted: #9AA8BD;
+  --accent: #5CC8DD;
+  --accent-ink: #0F1724;
+  --accent-strong: #7FD6E8;
+  --line: #26344A;
+}
+
+/* Harbor's hero photo is a 4:5 rectangle with a 20px radius. */
+[data-style="harbor"] .hero__media img {
+  border-radius: 20px;
+}

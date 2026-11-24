@@ -1,0 +1,111 @@
+# Canonical, Open Graph and sitemap URLs must be absolute, so baseURL needs a
+# real origin. Deployments override it with HUGO_BASEURL (Vercel sets this
+# automatically); local development falls back to the placeholder below.
+baseURL = "https://example.com/"
+relativeURLs = false
+theme = "folio"
+# The site title is only a fallback for tools that read it directly. Every
+# page, the RSS feed and the metadata take the person's name from
+# personal/profile.yaml, so a fork never shows the demo person's name.
+title = "Personal site"
+defaultContentLanguage = "en"
+enableRobotsTXT = true
+
+# Site metadata comes from data/profile.yaml; these are only fallbacks.
+[pagination]
+  pagerSize = 10
+
+[params]
+  style = "nocturne"
+  # layout = "sidebar"   # optional: split | centered | typographic | sidebar | band
+  locale = "en-US"
+  # description: optional. Left unset on purpose: when it is missing the site
+  # builds one from personal/profile.yaml (name, role, location), so the
+  # metadata can never point at the demo person. Set it here to override.
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = false
+  [markup.goldmark.parser]
+    [markup.goldmark.parser.attribute]
+      block = true
+      title = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    pageRef = "/"
+    weight = 10
+  [[menu.main]]
+    name = "About"
+    pageRef = "/about"
+    weight = 20
+  [[menu.main]]
+    name = "Projects"
+    pageRef = "/projects"
+    weight = 30
+  [[menu.main]]
+    name = "Blog"
+    pageRef = "/blog"
+    weight = 40
+  [[menu.main]]
+    name = "Contact"
+    pageRef = "/contact"
+    weight = 50
+
+[sitemap]
+  changefreq = "monthly"
+  filename = "sitemap.xml"
+  priority = 0.5
+
+# No taxonomies: the site has no tag or category pages.
+[taxonomies]
+  tag = ""
+  category = ""
+
+# The personal/ folder is the only thing a site owner replaces. Hugo mounts it
+# into the standard locations so the theme never has to know it exists.
+[[module.mounts]]
+  source = "personal/profile.yaml"
+  target = "data/profile.yaml"
+
+[[module.mounts]]
+  source = "personal/photos"
+  target = "assets/photos"
+
+# Blog covers live in their own folder so a post cover is named after the
+# post, not after the person. A post names its cover in its front matter.
+[[module.mounts]]
+  source = "personal/blog"
+  target = "assets/blog"
+
+[[module.mounts]]
+  source = "personal/cv.pdf"
+  target = "static/cv.pdf"
+
+[[module.mounts]]
+  source = "content"
+  target = "content"
+
+[[module.mounts]]
+  source = "static"
+  target = "static"
+
+[[module.mounts]]
+  source = "assets"
+  target = "assets"
+
+[[module.mounts]]
+  source = "themes/folio/layouts"
+  target = "layouts"
+
+[[module.mounts]]
+  source = "themes/folio/assets"
+  target = "assets"
+
+[[module.mounts]]
+  source = "themes/folio/static"
+  target = "static"

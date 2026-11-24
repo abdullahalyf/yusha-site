@@ -1,0 +1,34 @@
+{{- /* The featured projects on the home page: alternating image-left/right
+     rows, at most three.
+
+     The image base name follows the position in the full projects list, so
+     the original index has to be carried through the filter.
+
+     A student whose strength is contests and academics should not lead with
+     a thin project list. When there are at least two achievements and fewer
+     than two projects, the achievements lead the home page instead, and this
+     section is left out.
+
+     Usage: partial "home-projects.html" $p
+*/ -}}
+{{- $p := . -}}
+{{- $featured := slice -}}
+{{- range $i, $proj := $p.projects -}}
+  {{- if and $proj.featured (lt (len $featured) 3) -}}
+    {{- $featured = $featured | append (dict "item" $proj "index" $i) -}}
+  {{- end -}}
+{{- end -}}
+{{- $leadWithAchievements := and (ge (len $p.achievements) 2) (lt (len $p.projects) 2) -}}
+{{- if and $featured (not $leadWithAchievements) }}
+<section class="section section--projects">
+  <div class="container">
+    <h2 class="section__title">Selected projects</h2>
+    <div class="project-list">
+      {{- range $featured }}
+      {{ partial "project.html" (dict "item" .item "index" .index "mode" "featured") }}
+      {{- end }}
+    </div>
+    <p class="section__more"><a class="link" href="{{ "projects/" | relURL }}"><span>All projects</span></a></p>
+  </div>
+</section>
+{{- end }}

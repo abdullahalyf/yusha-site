@@ -1,0 +1,80 @@
+{{- /* Premium "bento" home: one grid of tiles. Used by the nocturne style.
+     Tiles hide themselves when their data is missing.
+     Optional profile.yaml field: stats: [{value: "3.50", label: "CGPA at DIU", decimals: 2}] */ -}}
+{{- $p := . -}}
+{{- $photo := partial "img.html" (dict "base" "profile" "alt" ($p.photo_alt | default (printf "Portrait of %s" $p.name)) "class" "tile__photo" "width" 960 "sizes" "(max-width: 760px) 100vw, 420px" "priority" true) -}}
+{{- $feat := dict -}}
+{{- $fi := 0 -}}
+{{- range $i, $pr := $p.projects }}{{ if and $pr.featured (not $feat) }}{{ $feat = $pr }}{{ $fi = $i }}{{ end }}{{ end -}}
+<section class="bento" aria-label="Overview">
+  <div class="container bento__grid">
+
+    <div class="tile tile--intro" data-fx="rise">
+      <h1 class="bento__name">{{ $p.name }}</h1>
+      <p class="bento__role">{{ $p.role }}</p>
+      <p class="bento__now">{{ $p.now }}</p>
+      {{ partial "hero-actions.html" $p }}
+    </div>
+
+    <figure class="tile tile--photo" data-fx="rise">
+      {{ $photo }}
+    </figure>
+
+    {{- with $p.stats }}
+    <div class="tile tile--stats" data-fx="rise">
+      <ul class="stats">
+        {{- range . }}
+        <li class="stats__item">
+          <span class="stats__value" data-count="{{ .value }}" data-decimals="{{ .decimals | default 0 }}">{{ .value }}</span>
+          <span class="stats__label">{{ .label }}</span>
+        </li>
+        {{- end }}
+      </ul>
+    </div>
+    {{- end }}
+
+    {{- if $feat }}
+    {{- $img := resources.GetMatch (printf "photos/project-%d.*" (add $fi 1)) }}
+    <a class="tile tile--project" href="{{ "projects/" | relURL }}" data-fx="rise">
+      {{- if $img }}
+      <div class="tile__media">
+        {{ partial "img.html" (dict "base" (printf "project-%d" (add $fi 1)) "alt" ($feat.alt | default (printf "Screenshot of %s" $feat.title)) "class" "tile__img" "width" 1600 "sizes" "(max-width: 760px) 100vw, 640px") }}
+      </div>
+      {{- end }}
+      <div class="tile__body">
+        <h2 class="tile__title">{{ $feat.title }}</h2>
+        {{- with $feat.summary }}<p class="tile__text">{{ . }}</p>{{ end }}
+        {{- with $feat.tech }}<ul class="project__tech">{{ range . }}<li class="pill">{{ . }}</li>{{ end }}</ul>{{ end }}
+      </div>
+    </a>
+    {{- end }}
+
+    {{- with $p.skills }}
+    <div class="tile tile--skills" data-fx="rise">
+      <h2 class="tile__title">Skills</h2>
+      {{- range first 2 . }}
+      <p class="tile__sub">{{ .group }}</p>
+      <ul class="project__tech">{{ range .items }}<li class="pill">{{ . }}</li>{{ end }}</ul>
+      {{- end }}
+    </div>
+    {{- end }}
+
+    {{- with $p.achievements }}
+    <div class="tile tile--awards" data-fx="rise">
+      <h2 class="tile__title">Achievements</h2>
+      <ul class="awards">
+        {{- range first 3 . }}
+        <li><span class="awards__year">{{ .year }}</span><span>{{ .title }}</span></li>
+        {{- end }}
+      </ul>
+    </div>
+    {{- end }}
+
+    <div class="tile tile--links" data-fx="rise">
+      <h2 class="tile__title">Say hello</h2>
+      {{ partial "socials.html" (dict "socials" $p.socials "show_empty" false) }}
+      <p class="tile__text"><a class="link" href="{{ "contact/" | relURL }}"><span>Contact page</span></a></p>
+    </div>
+
+  </div>
+</section>

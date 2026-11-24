@@ -1,0 +1,39 @@
+{{- /* Resolve the small avatar photo.
+     Priority: personal/photos/avatar.*, then personal/photos/profile.*.
+     An avatar is the small, formal photo — the one used in a circle or a
+     square badge — as opposed to the large portrait, which is the photo
+     on the home page. A site with no avatar file simply uses its portrait
+     everywhere, so nothing here is ever required.
+
+     Usage: partial "avatar.html" (dict
+                "alt"   "Portrait of ..."
+                "class" "avatar"
+                "width" 96
+                "square" true    # crop to a square instead of keeping the ratio
+              )
+     Returns a resource (image), or nothing when there is no photo at all.
+*/ -}}
+{{- $alt := .alt | default "" -}}
+{{- $class := .class | default "" -}}
+{{- $width := .width | default 96 -}}
+{{- $square := .square | default false -}}
+{{- $resource := resources.GetMatch "photos/avatar.*" -}}
+{{- if not $resource -}}
+  {{- $resource = resources.GetMatch "photos/profile.*" -}}
+{{- end -}}
+{{- if not $resource -}}
+  {{- /* No photo at all: the caller checks for this and omits the image. */ -}}
+{{- else -}}
+  {{- $out := $resource -}}
+  {{- if $square -}}
+    {{- $out = $resource.Fill (printf "%dx%d Center webp q85" $width $width) -}}
+  {{- else -}}
+    {{- $out = $resource.Resize (printf "%dx webp q85" $width) -}}
+  {{- end -}}
+  <img src="{{ $out.RelPermalink }}"
+       width="{{ $out.Width }}" height="{{ $out.Height }}"
+       alt="{{ $alt }}"
+       class="{{ $class }}"
+       loading="lazy"
+       decoding="async">
+{{- end -}}

@@ -1,0 +1,72 @@
+{{- /* The "Moments" strip on the home page: a short row of photos that
+     opens in the lightbox and points at the full gallery on the About page.
+
+     The same folder as the About gallery (personal/photos/gallery/) and the
+     same order: the `gallery:` list in profile.yaml first, then anything
+     else in the folder by name. The strip shows only the first few.
+
+     The count is set by `moments:` in profile.yaml when the site owner
+     wants a different number; otherwise it is six.
+
+     Usage: partial "home-moments.html" $p
+*/ -}}
+{{- $p := . -}}
+{{- $limit := $p.moments | default 6 -}}
+{{- $files := slice -}}
+{{- $captions := dict -}}
+{{- range $p.gallery -}}
+  {{- $name := .file | default "" -}}
+  {{- if $name -}}
+    {{- $files = $files | append $name -}}
+    {{- $captions = merge $captions (dict $name (.caption | default "")) -}}
+  {{- end -}}
+{{- end -}}
+{{- /* Every image in the folder, by file name without extension. */ -}}
+{{- $rest := slice -}}
+{{- range resources.Match "photos/gallery/*" -}}
+  {{- $stem := path.BaseName .Name -}}
+  {{- if not (in $files $stem) -}}
+    {{- $rest = $rest | append $stem -}}
+  {{- end -}}
+{{- end -}}
+{{- $files = $files | append (sort $rest) -}}
+{{- $files = first $limit $files -}}
+{{- if $files }}
+<section class="section section--moments">
+  <div class="container">
+    <h2 class="section__title">Moments</h2>
+    <ul class="moments">
+      {{- range $files }}
+      {{- $stem := . -}}
+      {{- with resources.GetMatch (printf "photos/gallery/%s.*" $stem) }}
+      {{- $caption := index $captions $stem | default "" -}}
+      {{- /* The thumbnail is a small resize; the lightbox opens the
+             full-size original, so the page never downloads the big file
+             until the visitor asks for it. */ -}}
+      {{- $thumb := .Resize "640x webp q80" -}}
+      {{- $full := .Resize "1600x webp q88" -}}
+      {{- $alt := $caption | default (printf "%s photo" $stem) -}}
+      <li class="moments__item">
+        <button class="moments__button" type="button"
+                data-lightbox-src="{{ $full.RelPermalink }}"
+                data-lightbox-alt="{{ $alt }}"
+                data-lightbox-caption="{{ $caption }}">
+          <img class="moments__img"
+               src="{{ $thumb.RelPermalink }}"
+               width="{{ $thumb.Width }}" height="{{ $thumb.Height }}"
+               alt="{{ $alt }}"
+               loading="lazy" decoding="async">
+          {{- /* The caption repeats the image's alt text, so it is hidden
+                 from the screen reader to avoid reading it twice. */ -}}
+          {{- with $caption }}
+          <span class="moments__caption" aria-hidden="true">{{ . }}</span>
+          {{- end }}
+        </button>
+      </li>
+      {{- end }}
+      {{- end }}
+    </ul>
+    <p class="section__more"><a class="link" href="{{ "about/" | relURL }}#gallery"><span>All moments</span></a></p>
+  </div>
+</section>
+{{- end }}

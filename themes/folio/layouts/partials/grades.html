@@ -1,0 +1,40 @@
+{{- /* Optional semester results, drawn as bars. Usage: partial "grades.html" $p
+     The list comes from `grades:` in profile.yaml. Without it the whole
+     section is not rendered at all.
+
+       grades:
+         - label: "1st"
+           value: 3.50
+           out_of: 4.00
+           focus: "Programming fundamentals in C"
+
+     `focus` is optional: it is the one line saying what that semester was
+     about, under the bar. `out_of` defaults to 4.00. */ -}}
+{{- $p := . -}}
+{{- with $p.grades }}
+<section class="section section--grades">
+  <div class="container">
+    <h2 class="section__title">{{ $p.grades_title | default "Semester results" }}</h2>
+    <ul class="grades">
+      {{- range . }}
+      {{- $out := .out_of | default 4.00 }}
+      {{- $pct := 0 }}
+      {{- if gt $out 0 }}{{ $pct = div (mul .value 100.0) $out }}{{ end }}
+      <li class="grades__item">
+        <span class="grades__label">{{ .label }}</span>
+        <span class="grades__bar" aria-hidden="true">
+          <span class="grades__fill" style="--grades-pct: {{ printf "%.1f" $pct }}%"></span>
+        </span>
+        <span class="grades__value">{{ printf "%.2f" .value }}</span>
+        {{- with .focus }}
+        <span class="grades__focus">{{ . }}</span>
+        {{- end }}
+      </li>
+      {{- end }}
+    </ul>
+    {{- with $p.grades_note }}
+    <p class="grades__note">{{ . }}</p>
+    {{- end }}
+  </div>
+</section>
+{{- end }}

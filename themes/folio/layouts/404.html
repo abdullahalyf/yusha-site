@@ -1,0 +1,14 @@
+{{ define "main" }}
+{{- $p := hugo.Data.profile -}}
+<section class="notfound">
+  <div class="container container--narrow">
+    <p class="notfound__code">404</p>
+    <h1 class="notfound__title">This page does not exist</h1>
+    <p class="notfound__text">The link may be out of date. Everything else is still where you left it.</p>
+    <p class="notfound__actions">
+      <a class="btn btn--primary" href="{{ "" | relURL }}"><span>Go to the home page</span></a>
+      <a class="btn btn--secondary" href="{{ "projects/" | relURL }}"><span>See projects</span></a>
+    </p>
+  </div>
+</section>
+{{ end }}

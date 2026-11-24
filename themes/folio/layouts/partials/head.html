@@ -1,0 +1,94 @@
+{{- $p := hugo.Data.profile -}}
+{{- $style := site.Params.style | default "harbor" -}}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}{{ $p.name }} — {{ $p.role }}{{ else }}{{ .Title }} — {{ $p.name }}{{ end }}</title>
+{{- /* The description comes from the page, then from params.description,
+       and otherwise is built from the person's own profile: name, role and
+       where they are. It is never left pointing at somebody else. */}}
+{{- $desc := partial "description.html" . -}}
+{{- with $desc }}
+<meta name="description" content="{{ . }}">
+{{- end }}
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{- /* Open Graph. Social crawlers do not reliably support WebP, so the OG
+       image is a JPEG derived from the processed photo. The small avatar
+       photo is preferred here when the site has one: a share card is a
+       badge, not a portrait. */}}
+{{- $ogImage := "" -}}
+{{- with resources.GetMatch "photos/avatar.*" -}}
+  {{- $ogImage = (.Fill "1200x630 Center jpg q85").Permalink -}}
+{{- else -}}
+  {{- with resources.GetMatch "photos/profile.*" -}}
+    {{- $ogImage = (.Fill "1200x630 Center jpg q85").Permalink -}}
+  {{- end -}}
+{{- end -}}
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:site_name" content="{{ $p.name }}">
+<meta property="og:title" content="{{ if .IsHome }}{{ $p.name }} — {{ $p.role }}{{ else }}{{ .Title }}{{ end }}">
+{{- with $desc }}
+<meta property="og:description" content="{{ . }}">
+{{- end }}
+<meta property="og:url" content="{{ .Permalink }}">
+{{- with $ogImage }}
+<meta property="og:image" content="{{ . }}">
+{{- end }}
+{{- if .IsPage }}
+{{- with .Date }}
+<meta property="article:published_time" content="{{ .Format "2006-01-02T15:04:05Z07:00" }}">
+{{- end }}
+{{- end }}
+<meta name="twitter:card" content="summary_large_image">
+
+{{- /* Favicon: SVG generated from the initials, in the style accent colour. */}}
+{{- $favicon := partial "favicon.html" $p | resources.FromString "favicon.svg" -}}
+<link rel="icon" type="image/svg+xml" href="{{ $favicon.RelPermalink }}">
+
+{{- /* Fonts. Self-hosted WOFF2, latin subset only. The display face is
+       preloaded; the body face loads with font-display: swap. */}}
+{{- $fonts := partial "fonts.html" $style }}
+{{- $local := slice -}}
+{{- range $fonts -}}
+  {{- if hasPrefix .url "/fonts/" -}}
+    {{- $local = $local | append . -}}
+  {{- end -}}
+{{- end }}
+{{- with $local }}
+<style>
+{{- range . }}
+@font-face {
+  font-family: "{{ .family }}";
+  font-style: normal;
+  font-weight: {{ .weights }};
+  font-display: swap;
+  src: url("{{ strings.TrimPrefix "/" .url | relURL }}") format("woff2");
+}
+{{- end }}
+</style>
+{{- end }}
+{{- range $fonts }}
+{{- if .isDisplay }}
+<link rel="preload" href="{{ strings.TrimPrefix "/" .url | relURL }}" as="font" type="font/woff2" crossorigin>
+{{- end }}
+{{- end }}
+
+{{- /* CSS: base + chosen style + the site owner's own overrides, minified
+       and fingerprinted. The override file is optional: a fork that does
+       not have one simply gets the stock style. */}}
+{{- $parts := slice
+      (resources.Get "css/base.css")
+      (resources.Get (printf "css/styles/%s.css" $style)) -}}
+{{- with resources.Get "css/override.css" -}}
+  {{- $parts = $parts | append . -}}
+{{- end -}}
+{{- $css := $parts | resources.Concat "css/site.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+{{- /* JSON-LD Person */}}
+{{ partial "jsonld.html" $p }}
+
+{{- /* No-flash theme script: sets data-theme before first paint. */}}
+<script>
+(function(){try{var s=localStorage.getItem("theme");var m=window.matchMedia("(prefers-color-scheme: dark)").matches;var t=s?s==="dark"?"dark":"light":({{ if eq $style "nocturne" }}"dark"{{ else }}(m?"dark":"light"){{ end }});document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>

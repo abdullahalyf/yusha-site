@@ -1,0 +1,10 @@
+{{ define "main" }}
+{{- $p := hugo.Data.profile -}}
+<section class="page-head">
+  <div class="container">
+    <h1 class="page-head__title">{{ .Title }}</h1>
+    {{ partial "page-lead.html" . }}
+  </div>
+</section>
+{{ partial "contact-block.html" (dict "profile" $p) }}
+{{ end }}

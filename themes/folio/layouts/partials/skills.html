@@ -1,0 +1,26 @@
+{{- /* Skills as grouped lists of plain pills.
+     Usage: partial "skills.html" (dict "groups" $p.skills "limit" 2 "title" "Skills") */ -}}
+{{- $groups := .groups -}}
+{{- $limit := .limit | default 0 -}}
+{{- $title := .title | default "Skills" -}}
+{{- if $groups }}
+{{- $shown := $groups -}}
+{{- if and $limit (gt (len $groups) $limit) -}}
+  {{- $shown = first $limit $groups -}}
+{{- end }}
+<section class="section section--skills">
+  <div class="container">
+    <h2 class="section__title">{{ $title }}</h2>
+    <div class="skills">
+      {{- range $shown }}
+      <div class="skills__group">
+        <h3 class="skills__group-title">{{ .group }}</h3>
+        <ul class="skills__items">
+          {{- range .items }}<li class="pill">{{ . }}</li>{{ end }}
+        </ul>
+      </div>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}

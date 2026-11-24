@@ -1,0 +1,25 @@
+{{- /* The "brief": a short paragraph that says who this is, with a link to
+     the full bio on the About page.
+
+     The text comes from `brief:` in profile.yaml when the site owner
+     writes one. When there is no brief, the first paragraph of `bio:` is
+     used instead, so a site with a bio but no brief still gets a brief.
+
+     Usage: partial "home-brief.html" $p
+*/ -}}
+{{- $p := . -}}
+{{- $text := $p.brief | default "" -}}
+{{- if not $text -}}
+  {{- $bio := $p.bio | default "" -}}
+  {{- $text = index (split $bio "\n\n") 0 -}}
+{{- end -}}
+{{- with $text }}
+<section class="section section--about">
+  <div class="container">
+    <div class="about-lead">
+      <p>{{ . | markdownify }}</p>
+      <p><a class="link" href="{{ "about/" | relURL }}"><span>More about me</span></a></p>
+    </div>
+  </div>
+</section>
+{{- end }}

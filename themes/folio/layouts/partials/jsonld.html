@@ -1,0 +1,29 @@
+{{- $p := . -}}
+{{- $sameAs := slice -}}
+{{- range $p.socials -}}
+  {{- $sameAs = $sameAs | append .url -}}
+{{- end -}}
+{{- /* The image must be the published, processed photo, not the raw asset path.
+       The small avatar photo is preferred here: schema.org's image is a badge. */ -}}
+{{- $image := "" -}}
+{{- with resources.GetMatch "photos/avatar.*" -}}
+  {{- $image = (.Fill "512x512 Center webp q85").Permalink -}}
+{{- else -}}
+  {{- with resources.GetMatch "photos/profile.*" -}}
+    {{- $image = (.Fill "512x512 Center webp q85").Permalink -}}
+  {{- end -}}
+{{- end -}}
+{{- $json := dict
+  "@context" "https://schema.org"
+  "@type" "Person"
+  "name" $p.name
+  "jobTitle" $p.role
+  "description" (trim (printf "%s" $p.bio) "\n ")
+  "url" site.BaseURL
+-}}
+{{- with $image }}{{ $json = merge $json (dict "image" .) }}{{ end -}}
+{{- with $p.location }}{{ $json = merge $json (dict "address" (dict "@type" "PostalAddress" "addressLocality" .)) }}{{ end -}}
+{{- with $p.contact }}{{ with .email }}{{ $json = merge $json (dict "email" .) }}{{ end }}{{ end -}}
+{{- if $sameAs }}{{ $json = merge $json (dict "sameAs" $sameAs) }}{{ end -}}
+{{- with partial "cv.html" $p }}{{ $json = merge $json (dict "hasCredential" .) }}{{ end -}}
+<script type="application/ld+json">{{ $json | jsonify (dict "indent" "  ") | safeJS }}</script>

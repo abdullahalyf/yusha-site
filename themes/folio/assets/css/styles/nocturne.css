@@ -1,0 +1,135 @@
+/* ==========================================================================
+   folio — styles/nocturne.css  (premium)
+   Dark-first midnight blue with a periwinkle accent and a warm amber glow.
+   Sora display over Figtree body. Home layout: bento (a grid of tiles).
+   Effects live in js/premium.js and are off for prefers-reduced-motion.
+   ========================================================================== */
+:root {
+  --bg-glow-a: rgba(54, 82, 201, 0.10);
+  --bg-glow-b: rgba(255, 150, 60, 0.08);
+  --bg: #F4F6FC;
+  --surface: #FFFFFF;
+  --ink: #121A2E;
+  --muted: #55607D;
+  --accent: #3652C9;
+  --accent-ink: #FFFFFF;
+  --accent-strong: #2A41A3;
+  --line: #DDE2F0;
+  --font-display: "Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display-weight: 700;
+  --radius-card: 22px;
+}
+[data-theme="dark"] {
+  --bg-glow-a: rgba(138, 168, 255, 0.20);
+  --bg-glow-b: rgba(255, 179, 107, 0.12);
+  --bg: #0A0F1E;
+  --surface: #121A2E;
+  --ink: #EAEEF8;
+  --muted: #9AA5C2;
+  --accent: #8AA8FF;
+  --accent-ink: #0A0F1E;
+  --accent-strong: #B3C6FF;
+  --line: #222C49;
+}
+
+/* ---- Bento grid ---------------------------------------------------------- */
+.bento { padding-block: var(--space-7) var(--space-5); }
+.bento__grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+.tile {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+/* Pointer spotlight: a soft light that follows the cursor inside a tile. */
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(138, 168, 255, 0.14), transparent 70%);
+}
+@media (hover: hover) { .tile:hover::after { opacity: 1; } .tile:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); } }
+a.tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.tile--intro { grid-column: 1 / 8; justify-content: center; padding: var(--space-7) var(--space-6); }
+.tile--photo { grid-column: 8 / 13; grid-row: 1 / 4; padding: 0; }
+.tile--stats { grid-column: 1 / 8; }
+.tile--project { grid-column: 1 / 8; padding: 0; flex-direction: row; align-items: stretch; }
+.tile--skills { grid-column: 1 / 6; }
+.tile--awards { grid-column: 6 / 10; }
+.tile--links { grid-column: 10 / 13; }
+
+.bento__name {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: clamp(2.4rem, 5.6vw, 4.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.bento__role { margin: 0; font-size: 1.15rem; color: var(--accent); font-weight: 600; }
+.bento__now { margin: 0; max-width: 46ch; color: var(--muted); }
+
+.tile__photo { width: 100%; height: 100%; min-height: 360px; object-fit: cover; object-position: center 20%; display: block; }
+.tile__title { font-family: var(--font-display); font-size: 1.1rem; margin: 0; letter-spacing: -0.01em; }
+.tile__sub { margin: var(--space-2) 0 0; color: var(--muted); font-size: 0.9rem; }
+.tile__text { margin: 0; color: var(--muted); }
+
+.tile--project .tile__media { flex: 0 0 46%; min-height: 220px; background: var(--bg); }
+.tile--project .tile__img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+.tile--project .tile__body { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); justify-content: center; }
+
+.stats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: var(--space-4); }
+.stats__value { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 4vw, 2.8rem); letter-spacing: -0.03em; line-height: 1.05; font-variant-numeric: tabular-nums; color: var(--accent-strong); }
+.stats__label { display: block; margin-top: 0.25rem; color: var(--muted); font-size: 0.92rem; }
+
+.awards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+.awards li { display: grid; grid-template-columns: 3rem 1fr; gap: var(--space-3); font-size: 0.95rem; line-height: 1.4; }
+.awards__year { color: var(--accent); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Tablet / mobile: fewer columns. */
+@media (max-width: 1000px) {
+  .tile--intro, .tile--stats, .tile--project { grid-column: 1 / 13; }
+  .tile--photo { grid-column: 1 / 13; grid-row: auto; order: -1; }
+  .tile__photo { min-height: 0; aspect-ratio: 4 / 3; max-height: 460px; }
+  .tile--skills { grid-column: 1 / 13; }
+  .tile--awards { grid-column: 1 / 8; }
+  .tile--links { grid-column: 8 / 13; }
+}
+@media (max-width: 720px) {
+  .tile--awards, .tile--links { grid-column: 1 / 13; }
+  .tile--project { flex-direction: column; }
+  .tile--project .tile__media { flex-basis: auto; min-height: 0; aspect-ratio: 16 / 9; }
+  .tile--intro { padding: var(--space-6) var(--space-5); }
+}
+
+/* ---- Intro motion (only when premium.js has run, never for reduced motion) */
+.fx [data-fx="rise"] { opacity: 0; transform: translateY(18px); }
+.fx-go [data-fx="rise"] {
+  opacity: 1; transform: none;
+  transition: opacity 600ms ease var(--d, 0ms), transform 700ms cubic-bezier(.2,.7,.2,1) var(--d, 0ms);
+}
+
+/* Inner pages share the dark surface look. */
+[data-style="nocturne"] .project--card,
+[data-style="nocturne"] .post-list__item { border-radius: var(--radius-card); }
+[data-style="nocturne"] .btn--primary { border-radius: 999px; }
+[data-style="nocturne"] .btn--secondary { border-radius: 999px; }

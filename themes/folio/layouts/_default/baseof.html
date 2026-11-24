@@ -1,0 +1,48 @@
+{{- $style := site.Params.style | default "harbor" -}}
+{{- $defaults := dict
+      "harbor"   "split"
+      "grove"    "centered"
+      "orchid"   "typographic"
+      "graphite" "sidebar"
+      "saffron"  "band"
+      "nocturne" "bento"
+-}}
+{{- $layout := site.Params.layout | default (index $defaults $style | default "split") -}}
+<!DOCTYPE html>
+<html lang="{{ site.Params.locale | default "en" }}"
+      data-style="{{ $style }}"
+      data-layout="{{ $layout }}"
+      data-theme="light">
+<head>
+  {{- /* Validate first: a missing photo or required field must fail the
+         build with a clear message, before any template tries to use it. */}}
+  {{ partial "validate.html" . }}
+  {{ partial "head.html" . }}
+</head>
+<body class="layout--{{ $layout }}{{ if and (eq $layout "sidebar") (eq hugo.Data.profile.sidebar_side "right") }} layout--sidebar-right{{ end }}">
+  {{- /* The background wash. It is a fixed layer behind the page and
+         carries no text, so it is hidden from screen readers. */}}
+  <div class="page-bg page-bg--{{ hugo.Data.profile.background | default "dots" }}" aria-hidden="true">
+    <span class="page-bg__glow page-bg__glow--one"></span>
+    <span class="page-bg__glow page-bg__glow--two"></span>
+  </div>
+  <a class="skip-link" href="#main">Skip to content</a>
+  {{ partial "header.html" . }}
+  <main id="main">
+    {{- /* The sidebar layout shows the profile column on every page. The
+           home page already has it inside its hero, so it is only added
+           here on the other pages. */}}
+    {{- if and (eq $layout "sidebar") (not .IsHome) }}
+    <div class="page-aside">
+      {{ partial "profile-aside.html" (dict "context" . "heading" false) }}
+    </div>
+    {{- end }}
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+  {{- /* The lightbox is on every page; it stays hidden until a trigger
+         opens it. */}}
+  {{ partial "lightbox.html" (dict "id" "lightbox") }}
+  {{ partial "scripts.html" . }}
+</body>
+</html>

@@ -1,0 +1,49 @@
+{{- $p := hugo.Data.profile -}}
+<header class="site-header">
+  <div class="container site-header__inner">
+    {{- /* The brand avatar is optional: a site with no avatar file just shows
+           the name, with no empty space left behind. It sits next to the
+           name, so it is decorative and is hidden from screen readers. */}}
+    <a class="site-header__brand" href="{{ "" | relURL }}">
+      {{- with resources.GetMatch "photos/avatar.*" }}
+        {{- $a := .Resize "96x webp q85" }}
+        <span class="site-header__avatar-wrap" aria-hidden="true">
+          <img class="site-header__avatar" src="{{ $a.RelPermalink }}"
+               width="{{ $a.Width }}" height="{{ $a.Height }}"
+               alt="" loading="lazy" decoding="async">
+        </span>
+      {{- end }}
+      <span class="site-header__name">{{ $p.name }}</span>
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul class="site-nav__list">
+        {{- range site.Menus.main }}
+        {{- /* The blog is optional: a site with no posts has no blog page, so
+               the menu entry is dropped rather than pointing at an empty
+               list. Every other section is always present. */}}
+        {{- $show := true }}
+        {{- if eq (strings.TrimSuffix "/" .URL) "/blog" }}
+          {{- $show = gt (len (where site.RegularPages "Section" "blog")) 0 }}
+        {{- end }}
+        {{- if $show }}
+        {{- $active := or (eq $.RelPermalink .URL) (and (ne .URL "/") (hasPrefix $.RelPermalink .URL)) }}
+        <li>
+          <a href="{{ .URL | relURL }}"{{ if $active }} aria-current="page"{{ end }}>{{ .Name }}</a>
+        </li>
+        {{- end }}
+        {{- end }}
+      </ul>
+    </nav>
+    <div class="site-header__actions">
+      <button class="theme-toggle" id="theme-toggle" type="button"
+              aria-pressed="false" aria-label="Switch to dark theme">
+        {{ partial "icon.html" (dict "name" "sun" "class" "icon-sun") }}
+        {{ partial "icon.html" (dict "name" "moon" "class" "icon-moon") }}
+      </button>
+      <button class="menu-toggle" id="menu-toggle" type="button"
+              aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+        {{ partial "icon.html" (dict "name" "menu") }}
+      </button>
+    </div>
+  </div>
+</header>

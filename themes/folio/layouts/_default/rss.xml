@@ -1,0 +1,59 @@
+{{- /* The built-in RSS template takes the site title from hugo.toml, which
+       would print the demo person's name in a reader's feed subscription.
+       The name belongs to personal/profile.yaml, so it is taken from there.
+
+       The feed holds the blog posts and nothing else, and it is not built at
+       all when there are no posts: a site without a blog should not advertise
+       an empty feed. */}}
+{{- $p := hugo.Data.profile -}}
+{{- $pages := where .RegularPages "Section" "blog" -}}
+{{- if $pages -}}
+{{- $limit := .Site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 -}}
+{{- $pages = $pages | first $limit -}}
+{{- end -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ if eq .Kind "home" }}{{ $p.name }}{{ else }}{{ .Title }} on {{ $p.name }}{{ end }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>{{ partial "description.html" . }}</description>
+    <generator>Hugo</generator>
+    {{- with .Site.Language.Locale }}
+    <language>{{ . }}</language>
+    {{- end }}
+    {{- with $p.contact.email }}
+    <managingEditor>{{ . }} ({{ $p.name }})</managingEditor>
+    <webMaster>{{ . }} ({{ $p.name }})</webMaster>
+    {{- end }}
+    {{- with .Site.Copyright }}
+    <copyright>{{ . }}</copyright>
+    {{- end }}
+    {{- with .Lastmod }}
+    <lastBuildDate>{{ .Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+    {{- end }}
+    {{- with .OutputFormats.Get "RSS" }}
+    {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{- end }}
+    {{- range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      {{- with $p.contact.email }}
+      <author>{{ . }} ({{ $p.name }})</author>
+      {{- end }}
+      {{- with .Params.summary }}
+      <description>{{ . }}</description>
+      {{- end }}
+      {{- with .Params.categories }}
+      <category>{{ delimit . ", " }}</category>
+      {{- end }}
+      {{- range .Params.tags }}
+      <category>{{ . }}</category>
+      {{- end }}
+    </item>
+    {{- end }}
+  </channel>
+</rss>
+{{- end -}}

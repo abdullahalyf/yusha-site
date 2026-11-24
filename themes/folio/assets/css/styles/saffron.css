@@ -1,0 +1,130 @@
+/* ==========================================================================
+   folio — styles/saffron.css
+   Bright, friendly. Indigo accent with a warm amber decorative accent that
+   is never used for text on the light background. Geometric display (Sora)
+   over a readable sans body (Source Sans 3). Hero layout: band.
+   ========================================================================== */
+
+:root {
+
+/* The faint wash behind the page: two very low-opacity radial
+   gradients in this style's own tones. The layer moves on `transform`
+   only, and the opacities are low enough that no word ever sits on a
+   different shade, so every contrast ratio is unchanged. */
+  --bg-glow-a: rgba(67, 56, 202, 0.09);
+  --bg-glow-b: rgba(245, 158, 11, 0.09);
+
+  --bg: #F7F7FB;
+  --surface: #FFFFFF;
+  --ink: #22223B;
+  --muted: #5B5B76;
+  --accent: #4338CA;
+  --accent-ink: #FFFFFF;
+  --accent-strong: #3730A3;
+  --line: #E3E3EE;
+
+  /* Decorative only. Never used for text on the light background, where
+     #F59E0B on #F7F7FB is only about 1.9:1. */
+  --spark: #F59E0B;
+
+  --font-display: "Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display-weight: 700;
+}
+
+[data-theme="dark"] {
+
+/* The faint wash behind the page: two very low-opacity radial
+   gradients in this style's own tones. The layer moves on `transform`
+   only, and the opacities are low enough that no word ever sits on a
+   different shade, so every contrast ratio is unchanged. */
+  --bg-glow-a: rgba(165, 180, 252, 0.13);
+  --bg-glow-b: rgba(67, 56, 202, 0.12);
+
+  --bg: #16152A;
+  --surface: #1F1E38;
+  --ink: #ECECF6;
+  --muted: #A5A5C2;
+  --accent: #A5B4FC;
+  --accent-ink: #16152A;
+  --accent-strong: #BECAFE;
+  --line: #2F2E4D;
+
+  --spark: #FBBF24;
+}
+
+/* Saffron's hero photo is a circle with a 6px surface border, overlapping
+   the coloured band. */
+[data-style="saffron"] .hero__media img {
+  border-radius: 50%;
+  border: 6px solid var(--surface);
+}
+
+/* The band layout: a full-bleed accent band with the photo overlapping its
+   lower edge and the text sitting below.
+
+   The band breaks out of the container with negative margins so it spans the
+   whole viewport width, and the photo is pulled up over the band's bottom
+   edge. */
+.hero--band {
+  padding-block: 0 var(--space-7);
+}
+
+.hero--band .hero__inner {
+  display: block;
+  padding-block: 0;
+}
+
+/* Full-bleed band. The band is a child of the container, so it has to
+   escape both the container's max-width and its side padding. The width is
+   set to 100vw and the margins pull it back to the viewport edges; the
+   parent clips nothing because `overflow-x` is hidden on the body. */
+.hero--band .hero__band {
+  height: clamp(120px, 16vw, 180px);
+  background: var(--accent);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.hero--band .hero__body {
+  display: block;
+}
+
+/* The photo overlaps the band by half its height. */
+.hero--band .hero__media--overlap {
+  width: 132px;
+  margin-top: -66px;
+  margin-bottom: var(--space-5);
+  position: relative;
+  z-index: 2;
+}
+
+.hero--band .hero__media--overlap img {
+  width: 132px;
+  height: 132px;
+  object-fit: cover;
+}
+
+.hero--band .hero__text {
+  position: relative;
+  z-index: 1;
+  max-width: 60ch;
+}
+
+.hero--band .hero__name {
+  font-size: clamp(2.5rem, 7.5vw, 4.75rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: var(--space-3);
+}
+
+.hero--band .hero__role {
+  font-size: 1.1875rem;
+  color: var(--accent);
+  margin-bottom: var(--space-3);
+}
+
+.hero--band .hero__now {
+  max-width: 54ch;
+}

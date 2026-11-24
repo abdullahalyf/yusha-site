@@ -1,0 +1,78 @@
+{{- /* Hero. Layout is chosen by the style, overridable with params.layout.
+     All five layouts are rendered structurally; harbor (split) is styled fully.
+*/ -}}
+{{- $p := hugo.Data.profile -}}
+{{- $style := site.Params.style | default "harbor" -}}
+{{- $defaults := dict
+      "harbor"   "split"
+      "grove"    "centered"
+      "orchid"   "typographic"
+      "graphite" "sidebar"
+      "saffron"  "band"
+      "nocturne" "bento"
+-}}
+{{- $layout := site.Params.layout | default (index $defaults $style | default "split") -}}
+{{- $photo := partial "img.html" (dict
+      "base" "profile"
+      "alt" ($p.photo_alt | default (printf "Portrait of %s" $p.name))
+      "class" "hero__photo-img"
+      "width" 960
+      "sizes" "(max-width: 720px) 78vw, (max-width: 1100px) 340px, 420px"
+      "priority" true
+    ) -}}
+<section class="hero hero--{{ $layout }}" data-hero-layout="{{ $layout }}">
+  <div class="container hero__inner">
+
+    {{- if eq $layout "split" }}
+    <div class="hero__text">
+      <h1 class="hero__name">{{ $p.name }}</h1>
+      <p class="hero__role">{{ $p.role }}</p>
+      <p class="hero__now">{{ $p.now }}</p>
+      {{ partial "hero-actions.html" $p }}
+    </div>
+    <div class="hero__media">
+      {{ $photo }}
+    </div>
+
+    {{- else if eq $layout "centered" }}
+    <div class="hero__media hero__media--center">
+      {{ $photo }}
+    </div>
+    <div class="hero__text hero__text--center">
+      <h1 class="hero__name">{{ $p.name }}</h1>
+      <p class="hero__role">{{ $p.role }}</p>
+      <p class="hero__now">{{ $p.now }}</p>
+      {{ partial "hero-actions.html" $p }}
+    </div>
+
+    {{- else if eq $layout "typographic" }}
+    <div class="hero__text">
+      <h1 class="hero__name">{{ $p.name }}</h1>
+      <p class="hero__role">{{ $p.role }}</p>
+      <p class="hero__now">{{ $p.now }}</p>
+      {{ partial "hero-actions.html" $p }}
+    </div>
+    <div class="hero__media hero__media--inline">
+      {{ $photo }}
+    </div>
+
+    {{- else if eq $layout "sidebar" }}
+    {{ partial "profile-aside.html" (dict "context" . "heading" true) }}
+
+    {{- else if eq $layout "band" }}
+    <div class="hero__band" aria-hidden="true"></div>
+    <div class="hero__body">
+      <div class="hero__media hero__media--overlap">
+        {{ $photo }}
+      </div>
+      <div class="hero__text">
+        <h1 class="hero__name">{{ $p.name }}</h1>
+        <p class="hero__role">{{ $p.role }}</p>
+        <p class="hero__now">{{ $p.now }}</p>
+        {{ partial "hero-actions.html" $p }}
+      </div>
+    </div>
+    {{- end }}
+
+  </div>
+</section>

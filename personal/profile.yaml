@@ -1,0 +1,176 @@
+# ============================================================
+#  ALL personal content for this site lives in THIS file.
+#  Photos / CV use FIXED names in this folder (see personal/README.md):
+#    photos/profile.jpg, avatar.jpg, project-N.jpg, hobby-N.jpg, edu-N.jpg,
+#    award-N.jpg, gallery/*.jpg, cv.pdf, blog/<post-name>.jpg
+# ============================================================
+
+name: "Yousha Ahmad"
+short_name: "Yousha"
+role: "CSE student & goalkeeper"
+now: "B.Sc. CSE student at Daffodil International University, learning C and Java, tutoring on the side and keeping goal whenever there is a match."
+photo_alt: "Yousha Ahmad in a dark suit, standing on a staircase"
+location: "Gazipur, Bangladesh"
+cv_url: ""
+
+stats:
+  - value: "3.50"
+    decimals: 2
+    label: "CGPA at DIU"
+  - value: "5.00"
+    decimals: 2
+    label: "GPA in HSC"
+  - value: "5.00"
+    decimals: 2
+    label: "GPA in SSC"
+  - value: "1"
+    label: "year of tutoring"
+
+highlight_academics: false
+academics: []
+home_sections:
+  - moments
+  - writing
+  - contact
+moments: 6
+
+facts:
+  - "CSE, Daffodil International University"
+  - "C, Java and HTML"
+  - "Goalkeeper"
+  - "Based in Gazipur"
+
+brief: "I'm a CSE student at Daffodil International University. I write C and Java for my courses, teach school students on the side, and play goalkeeper for fun and for my team."
+
+bio: |
+  I'm Yousha, a Computer Science and Engineering student at Daffodil International University. My CGPA is 3.50, and I'm still early in the degree, learning C and Java and getting comfortable with HTML.
+
+  Most of my programming so far is course work. The one I'm proudest of is StockSync, a warehouse inventory program in C that I built for the CSE214 Algorithm Lab. It runs from a text menu and covers stock, search, sorting and reports.
+
+  Outside class I tutor school students from Play to Class 10 in maths, science, English and ICT. I was also games prefect at school, where I organised inter-house games and led the football team. In goal is where I'm happiest.
+
+education:
+  - degree: "B.Sc. in Computer Science and Engineering"
+    institution: "Daffodil International University"
+    start: "2025"
+    end: "Present"
+    detail: "CGPA 3.50 so far. Studying programming in C and Java, algorithms and the other first-year CSE courses."
+  - degree: "Higher Secondary Certificate (Science)"
+    institution: "Rajendrapur Cantonment Public School and College"
+    start: ""
+    end: "2024"
+    detail: "GPA 5.00."
+  - degree: "Secondary School Certificate (Science)"
+    institution: "Rajendrapur Cantonment Public School and College"
+    start: ""
+    end: "2022"
+    detail: "GPA 5.00."
+
+experience:
+  - title: "Private tutor"
+    org: "Online and home tuition"
+    start: ""
+    end: "Present"
+    detail: "About a year of teaching students from Play to Class 10 in maths, science, English and ICT, both online and at their homes."
+  - title: "Games prefect"
+    org: "Rajendrapur Cantonment Public School and College"
+    start: ""
+    end: ""
+    detail: "Organised inter-house games and school events, led the football team and took part in extracurricular activities."
+
+skills:
+  - group: "Programming"
+    items: ["C", "Java (learning)", "HTML"]
+  - group: "Tools"
+    items: ["MS Office", "Canva"]
+  - group: "People skills"
+    items: ["Teaching", "Leadership", "Event management", "Teamwork"]
+
+projects:
+  - title: "StockSync — Warehouse Inventory"
+    summary: "A menu-driven inventory program in C for the CSE214 Algorithm Lab. Add, edit and remove products, record stock in and out, search, sort, and get low-stock, category-value and supplier reports. Exports to CSV and keeps a backup."
+    tech: ["C", "File storage", "CSV"]
+    alt: "The StockSync menu running in a terminal, listing the dashboard, product, stock, search, report and backup options."
+    live: ""
+    code: "https://github.com/youshaahmad52-ship-it/WareHouse-Inventory"
+    featured: true
+  - title: "Student Result Calculator"
+    summary: "A small C program that takes marks for each subject and prints the total, GPA and grade for a student."
+    tech: ["C"]
+    live: ""
+    code: ""
+    featured: false
+  - title: "Simple Bank Account"
+    summary: "A console program in Java for a course, with deposit, withdraw and balance check on one account."
+    tech: ["Java"]
+    live: ""
+    code: ""
+    featured: false
+  - title: "My first web page"
+    summary: "A one-page introduction to myself, written in plain HTML while I was learning how a page is built."
+    tech: ["HTML"]
+    live: ""
+    code: ""
+    featured: false
+
+achievements:
+  - year: "2025"
+    title: "Marathon finisher"
+    issuer: "Navana Runners"
+  - year: "2023"
+    title: "Runners-up, Inter-Cantonment Football (goalkeeper)"
+    issuer: "Inter-Cantonment tournament"
+  - year: "2021"
+    title: "Champion, Inter-House Football (goalkeeper)"
+    issuer: "Egarosindur House"
+  - year: "2018"
+    title: "Participant, Exercise Shanti Doot-4"
+    issuer: "BIPSOT"
+
+gallery:
+  - { file: g01, caption: "" }
+  - { file: g02, caption: "" }
+  - { file: g03, caption: "" }
+  - { file: g04, caption: "" }
+  - { file: g05, caption: "" }
+  - { file: g06, caption: "" }
+  - { file: g07, caption: "" }
+  - { file: g08, caption: "" }
+  - { file: g09, caption: "" }
+  - { file: g10, caption: "" }
+  - { file: g11, caption: "" }
+  - { file: g12, caption: "" }
+  - { file: g13, caption: "" }
+  - { file: g14, caption: "" }
+
+languages: ["Bangla", "English", "Hindi", "Spanish"]
+
+hobbies:
+  - title: "Football"
+    text: "I play as a goalkeeper, for my school team and with friends."
+  - title: "Cricket"
+    text: "Playing and watching with friends."
+  - title: "Table tennis"
+    text: "A quick game whenever there is a table."
+  - title: "Video games"
+    text: "Playing with friends is the best part."
+  - title: "Travel"
+    text: "Seeing new places and taking photos."
+  - title: "Time with friends"
+    text: "Hanging out and playing together."
+
+contact:
+  email: "youshaahmad52@gmail.com"
+  phone: "+880 1404-170576"
+  whatsapp: "+880 1404-170576"
+  note: "Happy to talk about study groups, tutoring or a game of football."
+
+socials:
+  - name: "github"
+    url: "https://github.com/youshaahmad52-ship-it"
+  - name: "linkedin"
+    url: "https://www.linkedin.com/in/yousha-ahmad-b71719383"
+  - name: "facebook"
+    url: "https://www.facebook.com/share/1ELDgyc2gY/"
+
+background: none

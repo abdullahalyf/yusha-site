@@ -1,0 +1,125 @@
+<!doctype html>
+<!-- Throwaway mockup for personal/photos/project-3.jpg (Shop Ledger).
+     Regenerate with: python tools/mockups/shoot_mockups.py -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shop Ledger</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #f4f6f8; color: #1c2430;
+    font: 15px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .frame { display: flex; gap: 24px; padding: 24px 26px; align-items: flex-start; }
+  .col { flex: 1; }
+  .h {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .h h1 { margin: 0; font-size: 21px; font-weight: 680; }
+  .h .sub { color: #78859a; font-size: 13px; margin-top: 3px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+  .kpi { background: #fff; border: 1px solid #e1e7ee; border-radius: 10px; padding: 13px 15px; }
+  .kpi .lbl { font-size: 12px; color: #78859a; text-transform: uppercase; letter-spacing: .5px; }
+  .kpi .val { font-size: 23px; font-weight: 680; margin-top: 5px; font-variant-numeric: tabular-nums; }
+  .kpi .delta { font-size: 12px; margin-top: 3px; }
+  .up { color: #177a4c; } .down { color: #b4472a; }
+  .panel { background: #fff; border: 1px solid #e1e7ee; border-radius: 10px; padding: 17px 19px; margin-bottom: 14px; }
+  .panel h3 { margin: 0 0 13px; font-size: 13px; text-transform: uppercase; letter-spacing: .6px; color: #78859a; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { text-align: left; color: #78859a; font-weight: 600; font-size: 12px; padding: 0 8px 8px 0; }
+  td { padding: 9px 8px 9px 0; border-top: 1px solid #eef1f5; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .item { font-weight: 600; }
+  .sku { color: #9aa6b6; font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 600; }
+  .ok { background: #e6f7ee; color: #177a4c; }
+  .low { background: #fdf0e3; color: #a05c11; }
+  .out { background: #fbe9e4; color: #b4472a; }
+  .phone {
+    width: 320px; background: #fff; border: 9px solid #1d2634; border-radius: 26px;
+    overflow: hidden; flex: none;
+  }
+  .notch { background: #1d2634; height: 22px; display: flex; justify-content: center; align-items: center; }
+  .notch i { width: 74px; height: 5px; border-radius: 3px; background: #3a4658; }
+  .p-top { padding: 14px 16px 12px; border-bottom: 1px solid #eef1f5; }
+  .p-top h2 { margin: 0; font-size: 17px; font-weight: 680; }
+  .p-top p { margin: 3px 0 0; color: #78859a; font-size: 12.5px; }
+  .p-total { padding: 14px 16px; background: #f7f9fb; border-bottom: 1px solid #eef1f5; display: flex; justify-content: space-between; align-items: baseline; }
+  .p-total span { font-size: 12.5px; color: #78859a; }
+  .p-total b { font-size: 22px; font-variant-numeric: tabular-nums; }
+  .p-list { padding: 6px 0; }
+  .p-item { display: flex; align-items: center; gap: 11px; padding: 10px 16px; }
+  .p-item .ic { width: 32px; height: 32px; border-radius: 8px; background: #eef1f6; flex: none; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  .p-item .nm { font-size: 13.5px; font-weight: 600; }
+  .p-item .pr { font-size: 12px; color: #78859a; }
+  .p-item .amt { margin-left: auto; font-weight: 650; font-variant-numeric: tabular-nums; font-size: 14px; }
+  .p-bar { padding: 12px 16px; border-top: 1px solid #eef1f5; display: flex; gap: 9px; }
+  .p-bar button {
+    flex: 1; padding: 11px; border-radius: 9px; border: 1px solid #d5dde6;
+    background: #fff; font-size: 13.5px; font-weight: 600; color: #3c4a5e;
+  }
+  .p-bar button.main { background: #1c7d5a; border-color: #1c7d5a; color: #fff; }
+  .bars { display: flex; align-items: flex-end; gap: 11px; height: 132px; padding-top: 8px; }
+  .bwrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .bar { width: 100%; background: #2f8f68; border-radius: 4px 4px 0 0; }
+  .bar.dim { background: #b9d8cb; }
+  .bwrap span { font-size: 11.5px; color: #78859a; }
+  .legend { display: flex; gap: 16px; font-size: 12.5px; color: #55637a; margin-top: 12px; }
+  .legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 6px; }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <div class="col">
+      <div class="h">
+        <div>
+          <h1>Al-Madina Hardware</h1>
+          <div class="sub">Day ledger &middot; Saturday, 23 November</div>
+        </div>
+        <button style="background:#1c7d5a;color:#fff;border:0;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:600">Print day summary</button>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="lbl">Sales today</div><div class="val">Tk 18,450</div><div class="delta up">&#9650; 12% vs last Saturday</div></div>
+        <div class="kpi"><div class="lbl">Items sold</div><div class="val">37</div><div class="delta up">&#9650; 6 items</div></div>
+        <div class="kpi"><div class="lbl">Low stock</div><div class="val">6</div><div class="delta down">&#9660; 2 more than usual</div></div>
+        <div class="kpi"><div class="lbl">Cash on hand</div><div class="val">Tk 42,900</div><div class="delta up">counted 20 Nov</div></div>
+      </div>
+
+      <div class="panel">
+        <h3>Stock that needs a reorder</h3>
+        <table>
+          <tr><th>Item</th><th>SKU</th><th class="num">In stock</th><th class="num">Sold today</th><th>Status</th></tr>
+          <tr><td class="item">Cement bag 50 kg</td><td class="sku">CMT-50</td><td class="num">4</td><td class="num">6</td><td><span class="tag low">Low</span></td></tr>
+          <tr><td class="item">GI pipe 1 inch</td><td class="sku">PIP-GI1</td><td class="num">11</td><td class="num">2</td><td><span class="tag ok">Fine</span></td></tr>
+          <tr><td class="item">PVC elbow 1 inch</td><td class="sku">PVC-EL1</td><td class="num">0</td><td class="num">3</td><td><span class="tag out">Out</span></td></tr>
+          <tr><td class="item">Wire 7/029 gauge</td><td class="sku">WIR-7029</td><td class="num">7</td><td class="num">1</td><td><span class="tag ok">Fine</span></td></tr>
+          <tr><td class="item">Hammer, 16 oz</td><td class="sku">HAM-16</td><td class="num">2</td><td class="num">1</td><td><span class="tag low">Low</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="notch"><i></i></div>
+      <div class="p-top">
+        <h2>New sale</h2>
+        <p>Al-Madina Hardware &middot; Counter 1</p>
+      </div>
+      <div class="p-total"><span>Cart total</span><b>Tk 2,340</b></div>
+      <div class="p-list">
+        <div class="p-item"><div class="ic">&#9636;</div><div><div class="nm">Cement bag 50 kg</div><div class="pr">Tk 380 &times; 4</div></div><div class="amt">1,520</div></div>
+        <div class="p-item"><div class="ic">&#9679;</div><div><div class="nm">PVC elbow 1 inch</div><div class="pr">Tk 45 &times; 2</div></div><div class="amt">90</div></div>
+        <div class="p-item"><div class="ic">&#9635;</div><div><div class="nm">Hammer, 16 oz</div><div class="pr">Tk 620 &times; 1</div></div><div class="amt">620</div></div>
+        <div class="p-item"><div class="ic">&#9889;</div><div><div class="nm">Wire 7/029, 100 ft</div><div class="pr">Tk 110 &times; 1</div></div><div class="amt">110</div></div>
+      </div>
+      <div class="p-bar">
+        <button>Add item</button>
+        <button class="main">Charge Tk 2,340</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

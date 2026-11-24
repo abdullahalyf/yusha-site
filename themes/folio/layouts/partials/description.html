@@ -1,0 +1,23 @@
+{{- /* Resolves the meta description for a page.
+
+       The order is: the page's own description, then params.description,
+       then one built from the person's profile.
+
+       A description written in the content front matter may use the
+       placeholders {name} and {role}; they are replaced with the values
+       from personal/profile.yaml. That is what lets one copy of the site
+       describe any person, with no name left over from the demo. */}}
+{{- $p := hugo.Data.profile -}}
+{{- $page := . -}}
+{{- $desc := "" -}}
+{{- with $page.Description }}
+  {{- $desc = . -}}
+{{- else }}
+  {{- with site.Params.description }}{{ $desc = . }}{{ else }}
+    {{- $desc = printf "%s — %s." $p.name $p.role -}}
+    {{- with $p.location }}{{ $desc = printf "%s %s" $desc . }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- $desc = replace $desc "{name}" $p.name -}}
+{{- $desc = replace $desc "{role}" $p.role -}}
+{{- return $desc -}}

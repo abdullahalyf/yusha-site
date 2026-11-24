@@ -1,0 +1,27 @@
+{{- /* The lightbox.
+     One <dialog> for the whole page. Every trigger on the page is a <button>
+     that carries the full-size image URL and its alt text in data
+     attributes; the script in theme.js opens the dialog and swaps the
+     image. There is no library and no build step.
+
+     The dialog is rendered once, at the end of <body>. It is closed with
+     the Escape key and by clicking the backdrop, and the focus returns to
+     the button that opened it.
+
+     Usage: partial "lightbox.html" (dict "id" "lightbox")
+*/ -}}
+{{- $id := .id | default "lightbox" -}}
+<dialog class="lightbox" id="{{ $id }}" aria-label="Enlarged image">
+  <div class="lightbox__inner">
+    {{- /* The src is filled in by the script when a trigger is clicked.
+           Until then the image is empty, so it is hidden from the
+           accessibility tree. */}}
+    <img class="lightbox__img" src="" alt="" aria-hidden="true">
+    <p class="lightbox__caption" hidden></p>
+  </div>
+  <form method="dialog" class="lightbox__close-form">
+    <button class="lightbox__close" type="submit" aria-label="Close image">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </form>
+</dialog>

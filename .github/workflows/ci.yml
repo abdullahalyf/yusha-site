@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  # Any branch, not just main: the task branches stack on each other, so a
+  # PR against task/01-theme has to be checked as well.
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  # Single source of truth for the Hugo version: .hugo-version
+  HUGO_VERSION: "0.170.1"
+
+jobs:
+  build:
+    name: Build and check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read pinned Hugo version
+        id: version
+        run: echo "version=$(cat .hugo-version)" >> "$GITHUB_OUTPUT"
+
+      - name: Install Hugo extended
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          # Hugo extended is required: the theme uses resources.Resize for WebP.
+          wget -q "https://github.com/gohugoio/hugo/releases/download/v${VERSION}/hugo_extended_${VERSION}_linux-amd64.tar.gz"
+          tar -xzf "hugo_extended_${VERSION}_linux-amd64.tar.gz" hugo
+          sudo mv hugo /usr/local/bin/hugo
+          hugo version
+
+      - name: Build
+        run: hugo --gc --minify --panicOnWarning
+
+      - name: Build every style
+        # The five styles share the templates but have their own CSS, so
+        # each one is built on its own. A style that breaks the build must
+        # fail CI rather than wait for somebody to try it.
+        run: |
+          set -euo pipefail
+          for style in harbor grove orchid graphite saffron; do
+            echo "::group::style $style"
+            HUGO_PARAMS_STYLE=$style hugo --gc --minify --panicOnWarning \
+              --destination "public-$style"
+            rm -rf "public-$style"
+            echo "::endgroup::"
+          done
+
+      - name: Check internal links
+        run: |
+          set -euo pipefail
+          # lychee checks links; --offline keeps it to internal hrefs only so the
+          # build never depends on third-party sites being up.
+          wget -q -O lychee.tgz https://github.com/lycheeverse/lychee/releases/download/v0.15.1/lychee-v0.15.1-x86_64-unknown-linux-gnu.tar.gz
+          # The tarball holds one file, named lychee, at the archive root.
+          tar -xzf lychee.tgz
+          chmod +x ./lychee
+          ./lychee --offline --no-progress --include-fragments './public/**/*.html'
+
+      - name: Verify profile validation fails the build
+        # The validate partial must break the build when a required field is
+        # missing. If this ever stops failing, the check has been defeated.
+        run: |
+          set -euo pipefail
+          cp personal/profile.yaml /tmp/profile.yaml.bak
+          sed -i 's/^name:.*/name: ""/' personal/profile.yaml
+          if hugo --gc --minify >/tmp/hugo.log 2>&1; then
+            echo "::error::Build succeeded with an empty name - validate.html is not working"
+            cp /tmp/profile.yaml.bak personal/profile.yaml
+            exit 1
+          fi
+          cp /tmp/profile.yaml.bak personal/profile.yaml
+          echo "validate.html correctly failed the build"
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: public
+          path: public/
+          retention-days: 7
