@@ -210,3 +210,34 @@ contact_side:                      # right column on the Contact page (nocturne 
     - { title: "Study groups.", text: "C or Java practice before a lab or an exam." }
     - { title: "Electronics.", text: "Small Arduino builds like the ammeter or the clap light." }
     - { title: "Football.", text: "If your team needs a goalkeeper." }
+
+# ---- Work page + the "open to" line on the home page -----------------------
+open_to: "Open to tuition, project collaborations and internships"   # "" hides the line
+
+work:
+  - title: "Home and online tuition"
+    status: "Taking students now"
+    open: true
+    text: "I have tutored for about a year. I teach one student or a small group, at their home or online, and I keep in touch with parents about progress."
+    points:
+      - "Play to Class 5: maths, English and general subjects"
+      - "Class 6 to 10: maths, science, English and ICT"
+      - "Exam preparation and homework help"
+    cta: "Ask about a tuition slot"
+  - title: "Software projects and internships"
+    status: "Open to collaborate"
+    open: true
+    text: "I am early in my degree and want to learn by working on real projects. I am happy to join a student team, help on a small software project, or take an internship where I can learn from experienced people."
+    points:
+      - "C and Java programs, console tools and course-style projects"
+      - "Simple web pages in HTML"
+      - "Small Arduino and electronics builds"
+    cta: "Invite me to a project"
+  - title: "Small indoor plants"
+    status: "A small business I ran"
+    open: false
+    text: "I ran a small business selling small indoor plants in pots: succulents, cacti and leafy desk plants. I picked the plants, looked after them until they were ready, and sold them to people who wanted a bit of green at home or on their desk. It taught me how to deal with customers, price fairly and keep my promises."
+    points: []
+    cta: ""
+    photos: ["work/plant-1", "work/plant-2", "work/plant-3", "work/plant-4"]   # files in personal/photos/
+    photos_note: "Example photos of the kind of plants I sold."

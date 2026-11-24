@@ -1,0 +1,42 @@
+{{ define "main" }}
+{{- /* Work page: what the person offers now and what they did before.
+     Data: `work:` in profile.yaml (title, status, open, text, points, cta). */ -}}
+{{- $p := hugo.Data.profile -}}
+<section class="page-head">
+  <div class="container">
+    <h1 class="page-head__title">{{ .Title }}</h1>
+    {{ partial "page-lead.html" . }}
+  </div>
+</section>
+{{- with $p.work }}
+<section class="section">
+  <div class="container">
+    <ul class="offers">
+      {{- range . }}
+      <li class="offer{{ if .open }} offer--open{{ end }}">
+        <p class="offer__status">{{ .status }}</p>
+        <div>
+          <h2 class="offer__title">{{ .title }}</h2>
+          <p class="offer__text">{{ .text }}</p>
+          {{- with .points }}<ul class="offer__points">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>{{ end }}
+          {{- with .photos }}
+          <div class="offer__photos">
+            {{- range . }}{{ if resources.GetMatch (printf "photos/%s.*" .) }}
+            {{ partial "img.html" (dict "base" . "alt" "A small potted indoor plant" "class" "offer__img" "width" 400 "sizes" "(max-width: 760px) 45vw, 200px") }}
+            {{- end }}{{ end }}
+          </div>
+          {{- end }}
+          {{- with .photos_note }}<p class="offer__note">{{ . }}</p>{{ end }}
+          {{- if and .cta $p.contact.email }}
+          <a class="btn btn--primary" href="mailto:{{ $p.contact.email }}?subject={{ .title | urlquery }}">
+            {{ partial "icon.html" (dict "name" "mail" "class" "btn__icon") }}<span>{{ .cta }}</span>
+          </a>
+          {{- end }}
+        </div>
+      </li>
+      {{- end }}
+    </ul>
+  </div>
+</section>
+{{- end }}
+{{ end }}

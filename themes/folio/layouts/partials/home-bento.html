@@ -12,6 +12,9 @@
 <section class="opening" aria-label="Introduction">
   <div class="container opening__grid">
     <div class="opening__text">
+      {{- with $p.open_to }}
+      <p class="opening__open"><a href="{{ "work/" | relURL }}"><span class="opening__dot" aria-hidden="true"></span>{{ . }}</a></p>
+      {{- end }}
       {{- $parts := split $p.name " " }}
       <h1 class="opening__name">
         {{- range $i, $w := $parts }}{{ if $i }} {{ end }}<span class="opening__line">{{ $w }}</span>{{ end -}}
