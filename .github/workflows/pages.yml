@@ -16,6 +16,8 @@ concurrency:
 
 jobs:
   build:
+    # Only the original repo publishes to GitHub Pages; forks deploy on Vercel.
+    if: github.repository == 'abdullahalyf/yusha-site'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

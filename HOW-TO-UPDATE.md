@@ -1,22 +1,28 @@
-# ইউশার সাইট — আপডেট করার নিয়ম
+# ইউশার ওয়েবসাইট — চালু করা ও আপডেট করার নিয়ম
 
-এই সাইট Vercel-এ চলে। GitHub-এ ফাইল বদলালেই কয়েক মিনিটে সাইট নিজে আপডেট হয়।
+## ১. Vercel-এ চালু করা (একবারই)
+1. GitHub-এ লগইন করে https://github.com/abdullahalyf/yusha-site খোলো → উপরে ডানে **Fork** → **Create fork**।
+2. https://vercel.com এ গিয়ে **Continue with GitHub** দিয়ে লগইন করো।
+3. **Add New… → Project** → তালিকায় `yusha-site` এর পাশে **Import**।
+4. কোনো সেটিং বদলাবে না। সরাসরি **Deploy** চাপো। ১–২ মিনিট পর লিংক পাবে (যেমন `yusha-site.vercel.app`)।
 
-## লেখা বদলাতে
-1. GitHub-এ নিজের repo খোলো → `personal` ফোল্ডার → `profile.yaml` → পেন্সিল (Edit) আইকন।
-2. নাম, নতুন প্রজেক্ট, অ্যাচিভমেন্ট, ফোন, লিংক — যা বদলানো লাগে বদলাও। স্পেস (indent) ঠিক রাখো।
-3. **Commit changes** চাপো। ২–৩ মিনিট পর সাইটে দেখা যাবে।
+ফর্ক না করে চাইলে: repo-র **Code → Download ZIP** নামিয়ে, নিজের GitHub-এ নতুন repo বানিয়ে সব ফাইল আপলোড করো (একবারে সর্বোচ্চ ১০০টা ফাইল), তারপর উপরের ২–৪ ধাপ।
 
-## ছবি বদলাতে
-`personal/photos` ফোল্ডারে একই নামে নতুন ছবি আপলোড করো (Add file → Upload files):
-- `profile.jpg` (বড় ছবি), `avatar.jpg` (ছোট গোল ছবি)
-- `project-1.jpg`… (প্রজেক্টের ছবি, `profile.yaml`-এর ক্রম অনুযায়ী)
-- `award-1.jpg`, `edu-1.jpg`, `hobby-1.jpg`
+## ২. আপডেট করা
+GitHub-এ কোনো ফাইল বদলে **Commit changes** চাপলেই Vercel ২–৩ মিনিটে সাইট নিজে আপডেট করে।
+
+**লেখা বদলাতে:** `personal/profile.yaml` → পেন্সিল (Edit) আইকন। নাম, প্রজেক্ট, অ্যাচিভমেন্ট, ফোন, লিংক, Work পেজ (`work:`), হোমের "Open to…" লাইন (`open_to:`) সব এখানে। লাইনের শুরুর স্পেস (indent) যেমন আছে তেমন রাখবে।
+
+**ছবি বদলাতে:** `personal/photos/` ফোল্ডারে **একই নামে** নতুন ছবি আপলোড করো (Add file → Upload files):
+- `profile.jpg` বড় ছবি, `avatar.jpg` গোল ছবি
+- `project-1.jpg`, `project-2.jpg`… প্রজেক্টের ক্রম অনুযায়ী
+- `award-1.jpg`, `edu-1.jpg`, `hobby-1.jpg`…
 - `gallery/` ফোল্ডারে যত খুশি ছবি
-- CV বদলাতে: `personal/cv.pdf`
+- `work/plant-1.jpg`…`plant-4.jpg` গাছের ব্যবসার ছবি
 
-## নতুন ব্লগ
-`content/blog` → Add file → Create new file → নাম `my-post.md`। উপরে এভাবে লিখে নিচে লেখা দাও:
+**CV বদলাতে:** `personal/cv.pdf` (মূল CV) আর `personal/cv-tutor.pdf` (টিউটর CV) একই নামে আপলোড করো।
+
+**নতুন ব্লগ:** `content/blog` → Add file → Create new file → নাম `my-post.md`। উপরে এটা লিখে নিচে লেখা দাও:
 ```
 ---
 title: "শিরোনাম"
@@ -25,7 +31,7 @@ summary: "এক লাইনের সারাংশ"
 cover: "my-post"
 ---
 ```
-কভার ছবি: `personal/blog/my-post.jpg`।
+কভার ছবি `personal/blog/my-post.jpg` নামে আপলোড করো।
 
-## প্রথমবার চালু করতে
-GitHub-এ এই repo Fork করো → vercel.com এ GitHub দিয়ে লগইন → Add New Project → তোমার fork বেছে Deploy চাপো (সেটিং বদলাতে হবে না)।
+## কিছু ভেঙে গেলে
+Vercel-এর Deployments পেজে লাল দাগ দেখলে শেষ যে ফাইল বদলেছ সেটা আগের মতো করে দাও। সাধারণত `profile.yaml`-এ স্পেস বা উদ্ধৃতিচিহ্ন (") ভুল হলেই এমন হয়।
