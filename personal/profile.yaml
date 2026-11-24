@@ -13,16 +13,11 @@ photo_alt: "Yousha Ahmad in a dark suit, standing on a staircase"
 location: "Gazipur, Bangladesh"
 cv_url: ""
 
-stats:
-  - value: "3.50"
-    decimals: 2
-    label: "CGPA at DIU"
-  - value: "5.00"
-    decimals: 2
-    label: "GPA in HSC"
-  - value: "5.00"
-    decimals: 2
-    label: "GPA in SSC"
+cvs:                               # extra CV buttons; files live in personal/ (see hugo.toml mounts)
+  - { file: "cv.pdf", label: "Download CV" }
+  - { file: "cv-tutor.pdf", label: "Tutor CV" }
+
+tech_line: "I write C and Java, build small things with Arduino, and I am learning the web with HTML."
 
 highlight_academics: false
 academics: []

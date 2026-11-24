@@ -108,11 +108,7 @@
       {{- range . }}<div><dt>{{ .label }}</dt><dd>{{ .value }}</dd></div>{{ end }}
     </dl>
     {{- end }}
-    {{- with partial "cv.html" $p }}
-    <a class="btn btn--primary about-card__cv" href="{{ . }}" download>
-      {{ partial "icon.html" (dict "name" "download" "class" "btn__icon") }}<span>Download CV</span>
-    </a>
-    {{- end }}
+    <div class="about-card__cvs">{{ partial "cv-buttons.html" (dict "profile" $p "class" "about-card__cv") }}</div>
   </div>
 </aside>
 </div>

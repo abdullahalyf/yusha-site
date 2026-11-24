@@ -1,21 +1,12 @@
-{{- /* Primary + secondary actions: CV download and contact link.
+{{- /* Primary + secondary actions: CV download(s) and email.
      Buttons say exactly what they do — no arrow glyphs appended. */ -}}
 {{- $p := . -}}
-{{- $cv := partial "cv.html" $p -}}
-{{- $actions := slice -}}
-{{- if $cv -}}
-  {{- $actions = $actions | append (dict "label" "Download CV" "href" $cv "class" "btn btn--primary" "icon" "download") -}}
-{{- end -}}
-{{- if $p.contact.email -}}
-  {{- $actions = $actions | append (dict "label" "Send email" "href" (printf "mailto:%s" $p.contact.email) "class" "btn btn--secondary" "icon" "mail") -}}
-{{- end -}}
-{{- if $actions }}
 <div class="hero__actions">
-  {{- range $actions }}
-  <a class="{{ .class }}" href="{{ .href }}"{{ if hasPrefix .href "http" }} rel="noopener noreferrer"{{ end }}>
-    {{ partial "icon.html" (dict "name" .icon "class" "btn__icon") }}
-    <span>{{ .label }}</span>
+  {{ partial "cv-buttons.html" (dict "profile" $p) }}
+  {{- with $p.contact.email }}
+  <a class="btn btn--secondary" href="mailto:{{ . }}">
+    {{ partial "icon.html" (dict "name" "mail" "class" "btn__icon") }}
+    <span>Send email</span>
   </a>
   {{- end }}
 </div>
-{{- end }}

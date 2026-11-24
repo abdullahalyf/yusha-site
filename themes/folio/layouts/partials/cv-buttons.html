@@ -1,0 +1,20 @@
+{{- /* CV download buttons. With `cvs:` in profile.yaml every listed file gets
+     its own button; otherwise the single CV from cv.html is used.
+     Usage: partial "cv-buttons.html" (dict "profile" $p "class" "extra-class") */ -}}
+{{- $p := .profile -}}
+{{- $extra := .class | default "" -}}
+{{- if $p.cvs -}}
+  {{- range $i, $c := $p.cvs -}}
+    {{- if fileExists (printf "personal/%s" $c.file) }}
+<a class="btn {{ if eq $i 0 }}btn--primary{{ else }}btn--secondary{{ end }} {{ $extra }}" href="{{ $c.file | relURL }}" download>
+  {{ partial "icon.html" (dict "name" "download" "class" "btn__icon") }}<span>{{ $c.label | default "Download CV" }}</span>
+</a>
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- with partial "cv.html" $p }}
+<a class="btn btn--primary {{ $extra }}" href="{{ . }}" download>
+  {{ partial "icon.html" (dict "name" "download" "class" "btn__icon") }}<span>Download CV</span>
+</a>
+  {{- end -}}
+{{- end -}}

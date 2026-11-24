@@ -18,12 +18,14 @@
       </h1>
       <p class="opening__role">{{ $p.role }}</p>
       <p class="opening__now">{{ $p.now }}</p>
-      {{- with $p.stats }}
-      <dl class="marks">
-        {{- range . }}
-        <div class="marks__item"><dt>{{ .label }}</dt><dd>{{ .value }}</dd></div>
-        {{- end }}
-      </dl>
+      {{- with $p.tech_line }}<p class="opening__tech">{{ . }}</p>{{ end }}
+      {{- $names := dict "github" "GitHub" "linkedin" "LinkedIn" "facebook" "Facebook" }}
+      {{- with $p.socials }}
+      <ul class="opening__socials">
+        {{- range . }}{{ if .url }}
+        <li><a href="{{ .url }}" rel="noopener noreferrer">{{ partial "icon.html" (dict "name" .name "class" "opening__icon") }}<span>{{ .label | default (index $names (lower .name)) | default .name }}</span></a></li>
+        {{- end }}{{ end }}
+      </ul>
       {{- end }}
       {{ partial "hero-actions.html" $p }}
     </div>

@@ -87,6 +87,10 @@ enableRobotsTXT = true
   target = "static/cv.pdf"
 
 [[module.mounts]]
+  source = "personal/cv-tutor.pdf"
+  target = "static/cv-tutor.pdf"
+
+[[module.mounts]]
   source = "content"
   target = "content"
 

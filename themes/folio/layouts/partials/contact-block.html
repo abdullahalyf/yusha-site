@@ -52,13 +52,6 @@
     <p class="contact-note">{{ . }}</p>
     {{- end }}
     {{ partial "socials.html" (dict "socials" $p.socials "show_empty" $p.show_empty_socials) }}
-    {{- if $cv }}
-    <p class="contact-actions">
-      <a class="btn btn--primary" href="{{ $cv }}" download>
-        {{ partial "icon.html" (dict "name" "download" "class" "btn__icon") }}
-        <span>Download CV</span>
-      </a>
-    </p>
-    {{- end }}
+    <p class="contact-actions">{{ partial "cv-buttons.html" (dict "profile" $p) }}</p>
   </div>
 </section>

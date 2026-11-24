@@ -102,6 +102,12 @@
 .marks__item { display: flex; flex-direction: column-reverse; }
 .marks dt { color: var(--muted); font-size: 0.88rem; }
 .marks dd { margin: 0; font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.opening__tech { margin: 0 0 var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--line); max-width: 46ch; }
+.opening__socials { list-style: none; margin: 0 0 var(--space-6); padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); }
+.opening__socials a { display: inline-flex; align-items: center; gap: 0.45rem; color: var(--ink); font-weight: 600; text-decoration: none; }
+.opening__socials a:hover { color: var(--accent); }
+.opening__icon { width: 18px; height: 18px; }
+.about-card__cvs { display: grid; gap: var(--space-2); }
 .opening__photo { margin: 0; }
 .opening__img {
   display: block; width: 100%; height: auto;
@@ -202,3 +208,8 @@
   .opening__line + .opening__line { animation-delay: 90ms; }
   .opening__photo { animation-delay: 160ms; }
 }
+
+/* ---- No casual copying: text cannot be selected or dragged. ------------- */
+[data-style="nocturne"] body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+[data-style="nocturne"] img { -webkit-user-drag: none; user-drag: none; }
+[data-style="nocturne"] input, [data-style="nocturne"] textarea { -webkit-user-select: text; user-select: text; }

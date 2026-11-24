@@ -174,3 +174,12 @@
     });
   }
 })();
+
+/* nocturne only: no right-click menu, copy, or image dragging. */
+(function () {
+  if (document.documentElement.getAttribute("data-style") !== "nocturne") return;
+  var stop = function (e) { e.preventDefault(); };
+  ["contextmenu", "copy", "cut", "dragstart", "selectstart"].forEach(function (t) {
+    document.addEventListener(t, stop);
+  });
+})();
