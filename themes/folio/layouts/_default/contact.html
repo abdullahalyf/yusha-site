@@ -6,5 +6,27 @@
     {{ partial "page-lead.html" . }}
   </div>
 </section>
+{{- if and (eq (site.Params.style | default "") "nocturne") $p.contact_side }}
+{{- $c := $p.contact_side }}
+<div class="container contact-layout">
+  <div class="contact-main">
+    {{ partial "contact-block.html" (dict "profile" $p) }}
+  </div>
+  <aside class="contact-side">
+    {{- with $c.photo }}{{ if resources.GetMatch (printf "photos/%s.*" .) }}
+    <figure class="contact-side__photo">
+      {{ partial "img.html" (dict "base" . "alt" ($c.photo_alt | default "") "class" "contact-side__img" "width" 720 "sizes" "(max-width: 860px) 92vw, 420px") }}
+    </figure>
+    {{- end }}{{ end }}
+    {{- with $c.topics }}
+    <h2 class="contact-side__title">{{ $c.title | default "Good reasons to write" }}</h2>
+    <ul class="contact-side__list">
+      {{- range . }}<li><strong>{{ .title }}</strong> {{ .text }}</li>{{ end }}
+    </ul>
+    {{- end }}
+  </aside>
+</div>
+{{- else }}
 {{ partial "contact-block.html" (dict "profile" $p) }}
+{{- end }}
 {{ end }}

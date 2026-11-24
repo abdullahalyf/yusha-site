@@ -1,5 +1,5 @@
 ---
 title: "Contact"
-description: "How to reach {name} by email, phone or social profile."
+description: "Email is the quickest way to reach me. I usually reply the same day."
 layout: "contact"
 ---

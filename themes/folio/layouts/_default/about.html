@@ -7,6 +7,11 @@
   </div>
 </section>
 
+{{- $aside := eq (site.Params.style | default "") "nocturne" -}}
+{{- if $aside }}
+<div class="container about-layout">
+<div class="about-main">
+{{- end }}
 {{- /* Full bio. */}}
 {{- with $p.bio }}
 <section class="section">
@@ -29,6 +34,7 @@
 {{- range $p.facts -}}
   {{- $aboutFacts = $aboutFacts | append . -}}
 {{- end -}}
+{{- if $aside }}{{ $aboutFacts = slice }}{{ end }}
 {{- with $aboutFacts }}
 <section class="section section--facts">
   <div class="container">
@@ -88,11 +94,34 @@
 </section>
 {{- end }}
 
+{{- if $aside }}
+</div>
+<aside class="about-aside" aria-label="At a glance">
+  <div class="about-card">
+    {{- with resources.GetMatch "photos/avatar.*" }}
+    {{- $a := .Fill "320x320 Center webp q85" }}
+    <img class="about-card__img" src="{{ $a.RelPermalink }}" width="160" height="160" alt="{{ $p.photo_alt }}" loading="lazy" decoding="async">
+    {{- end }}
+    <p class="about-card__name">{{ $p.name }}</p>
+    {{- with $p.about_facts }}
+    <dl class="about-card__list">
+      {{- range . }}<div><dt>{{ .label }}</dt><dd>{{ .value }}</dd></div>{{ end }}
+    </dl>
+    {{- end }}
+    {{- with partial "cv.html" $p }}
+    <a class="btn btn--primary about-card__cv" href="{{ . }}" download>
+      {{ partial "icon.html" (dict "name" "download" "class" "btn__icon") }}<span>Download CV</span>
+    </a>
+    {{- end }}
+  </div>
+</aside>
+</div>
+{{- end }}
 {{- /* Moments: the photo gallery. Hidden when the folder is empty. */}}
 {{ partial "gallery.html" (dict "profile" $p) }}
 
 {{- $cv := partial "cv.html" $p }}
-{{- if $cv }}
+{{- if and $cv (not $aside) }}
 <section class="section section--cv">
   <div class="container">
     <a class="btn btn--primary" href="{{ $cv }}" download>

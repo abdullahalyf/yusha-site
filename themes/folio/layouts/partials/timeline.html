@@ -27,7 +27,7 @@
       {{- end -}}
       <li class="timeline__item {{ if $image }}timeline__item--with-photo{{ end }}">
         <span class="timeline__dot" aria-hidden="true"></span>
-        <p class="timeline__date">{{ .start }}{{ if .end }} — {{ .end }}{{ end }}</p>
+        {{- if or .start .end }}<p class="timeline__date">{{ .start }}{{ if and .start .end }} – {{ end }}{{ .end }}</p>{{ end }}
         <h3 class="timeline__title">
           {{ if eq $kind "education" }}{{ .degree }}{{ else }}{{ .title }}{{ end }}
         </h3>

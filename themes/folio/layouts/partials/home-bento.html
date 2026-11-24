@@ -1,80 +1,120 @@
-{{- /* Premium "bento" home: one grid of tiles. Used by the nocturne style.
-     Tiles hide themselves when their data is missing.
-     Optional profile.yaml field: stats: [{value: "3.50", label: "CGPA at DIU", decimals: 2}] */ -}}
-{{- $p := . -}}
-{{- $photo := partial "img.html" (dict "base" "profile" "alt" ($p.photo_alt | default (printf "Portrait of %s" $p.name)) "class" "tile__photo" "width" 960 "sizes" "(max-width: 760px) 100vw, 420px" "priority" true) -}}
-{{- $feat := dict -}}
-{{- $fi := 0 -}}
-{{- range $i, $pr := $p.projects }}{{ if and $pr.featured (not $feat) }}{{ $feat = $pr }}{{ $fi = $i }}{{ end }}{{ end -}}
-<section class="bento" aria-label="Overview">
-  <div class="container bento__grid">
+{{- /* Home page for the nocturne style. One opening (name + portrait), then
+     a photo row, the projects, the writing and a closing contact line.
+     Every part hides itself when its data is missing.
 
-    <div class="tile tile--intro" data-fx="rise">
-      <h1 class="bento__name">{{ $p.name }}</h1>
-      <p class="bento__role">{{ $p.role }}</p>
-      <p class="bento__now">{{ $p.now }}</p>
+     profile.yaml fields used besides the usual ones:
+       stats:      [{value, label}]     small marks line under the intro
+       highlights: [{photo, caption}]   photo row; photo is a base name in personal/photos/
+*/ -}}
+{{- $p := . -}}
+{{- $cv := partial "cv.html" $p -}}
+
+<section class="opening" aria-label="Introduction">
+  <div class="container opening__grid">
+    <div class="opening__text">
+      {{- $parts := split $p.name " " }}
+      <h1 class="opening__name">
+        {{- range $i, $w := $parts }}{{ if $i }} {{ end }}<span class="opening__line">{{ $w }}</span>{{ end -}}
+      </h1>
+      <p class="opening__role">{{ $p.role }}</p>
+      <p class="opening__now">{{ $p.now }}</p>
+      {{- with $p.stats }}
+      <dl class="marks">
+        {{- range . }}
+        <div class="marks__item"><dt>{{ .label }}</dt><dd>{{ .value }}</dd></div>
+        {{- end }}
+      </dl>
+      {{- end }}
       {{ partial "hero-actions.html" $p }}
     </div>
-
-    <figure class="tile tile--photo" data-fx="rise">
-      {{ $photo }}
+    <figure class="opening__photo">
+      {{ partial "img.html" (dict "base" "profile" "alt" ($p.photo_alt | default (printf "Portrait of %s" $p.name)) "class" "opening__img" "width" 960 "sizes" "(max-width: 860px) 92vw, 460px" "priority" true) }}
     </figure>
+  </div>
+</section>
 
-    {{- with $p.stats }}
-    <div class="tile tile--stats" data-fx="rise">
-      <ul class="stats">
-        {{- range . }}
-        <li class="stats__item">
-          <span class="stats__value" data-count="{{ .value }}" data-decimals="{{ .decimals | default 0 }}">{{ .value }}</span>
-          <span class="stats__label">{{ .label }}</span>
-        </li>
-        {{- end }}
-      </ul>
-    </div>
-    {{- end }}
-
-    {{- if $feat }}
-    {{- $img := resources.GetMatch (printf "photos/project-%d.*" (add $fi 1)) }}
-    <a class="tile tile--project" href="{{ "projects/" | relURL }}" data-fx="rise">
-      {{- if $img }}
-      <div class="tile__media">
-        {{ partial "img.html" (dict "base" (printf "project-%d" (add $fi 1)) "alt" ($feat.alt | default (printf "Screenshot of %s" $feat.title)) "class" "tile__img" "width" 1600 "sizes" "(max-width: 760px) 100vw, 640px") }}
-      </div>
+{{- with $p.highlights }}
+<section class="section strip" aria-label="Away from the desk">
+  <div class="container">
+    <h2 class="section__title">Away from the desk</h2>
+    <div class="strip__grid">
+      {{- range $i, $h := . }}
+      {{- if resources.GetMatch (printf "photos/%s.*" $h.photo) }}
+      <figure class="strip__item strip__item--{{ $i }}">
+        {{ partial "img.html" (dict "base" $h.photo "alt" $h.caption "class" "strip__img" "width" 800 "sizes" "(max-width: 760px) 92vw, 420px") }}
+        <figcaption class="strip__caption">{{ $h.caption }}</figcaption>
+      </figure>
       {{- end }}
-      <div class="tile__body">
-        <h2 class="tile__title">{{ $feat.title }}</h2>
-        {{- with $feat.summary }}<p class="tile__text">{{ . }}</p>{{ end }}
-        {{- with $feat.tech }}<ul class="project__tech">{{ range . }}<li class="pill">{{ . }}</li>{{ end }}</ul>{{ end }}
-      </div>
-    </a>
-    {{- end }}
-
-    {{- with $p.skills }}
-    <div class="tile tile--skills" data-fx="rise">
-      <h2 class="tile__title">Skills</h2>
-      {{- range first 2 . }}
-      <p class="tile__sub">{{ .group }}</p>
-      <ul class="project__tech">{{ range .items }}<li class="pill">{{ . }}</li>{{ end }}</ul>
       {{- end }}
     </div>
-    {{- end }}
+  </div>
+</section>
+{{- end }}
 
-    {{- with $p.achievements }}
-    <div class="tile tile--awards" data-fx="rise">
-      <h2 class="tile__title">Achievements</h2>
-      <ul class="awards">
-        {{- range first 3 . }}
-        <li><span class="awards__year">{{ .year }}</span><span>{{ .title }}</span></li>
+{{- $featured := slice -}}
+{{- range $i, $proj := $p.projects -}}
+  {{- if and $proj.featured (lt (len $featured) 3) -}}
+    {{- $featured = $featured | append (dict "item" $proj "index" $i) -}}
+  {{- end -}}
+{{- end -}}
+{{- with $featured }}
+<section class="section work" aria-labelledby="work-title">
+  <div class="container">
+    <h2 class="section__title" id="work-title">Things I've built</h2>
+    <ul class="work__list">
+      {{- range . }}
+      {{- $n := add .index 1 }}
+      <li class="work__row">
+        {{- if resources.GetMatch (printf "photos/project-%d.*" $n) }}
+        <div class="work__media">
+          {{ partial "img.html" (dict "base" (printf "project-%d" $n) "alt" (.item.alt | default (printf "Picture of %s" .item.title)) "class" "work__img" "width" 640 "sizes" "(max-width: 760px) 92vw, 300px") }}
+        </div>
         {{- end }}
-      </ul>
-    </div>
+        <div class="work__body">
+          <h3 class="work__title">{{ .item.title }}</h3>
+          <p class="work__text">{{ .item.summary }}</p>
+          {{- with .item.tech }}<p class="work__tech">{{ delimit . ", " }}</p>{{ end }}
+          {{- with .item.code }}<p class="work__link"><a class="link" href="{{ . }}" rel="noopener noreferrer"><span>Read the code on GitHub</span></a></p>{{ end }}
+        </div>
+      </li>
+      {{- end }}
+    </ul>
+    <p class="section__more"><a class="link" href="{{ "projects/" | relURL }}"><span>See all {{ len $p.projects }} projects</span></a></p>
+  </div>
+</section>
+{{- end }}
+
+{{- $posts := first 3 (where site.RegularPages "Section" "blog") -}}
+{{- with $posts }}
+<section class="section notes" aria-labelledby="notes-title">
+  <div class="container">
+    <h2 class="section__title" id="notes-title">Recent writing</h2>
+    <ul class="notes__list">
+      {{- range . }}
+      <li class="notes__row">
+        <time class="notes__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time>
+        <a class="notes__title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+        {{- with .Params.summary }}<p class="notes__summary">{{ . }}</p>{{ end }}
+      </li>
+      {{- end }}
+    </ul>
+    <p class="section__more"><a class="link" href="{{ "blog/" | relURL }}"><span>All posts</span></a></p>
+  </div>
+</section>
+{{- end }}
+
+<section class="section closing" aria-labelledby="closing-title">
+  <div class="container">
+    <h2 class="closing__title" id="closing-title">Write to me</h2>
+    {{- with $p.contact.email }}
+    <p class="closing__mail"><a href="mailto:{{ . }}">{{ . }}</a></p>
     {{- end }}
-
-    <div class="tile tile--links" data-fx="rise">
-      <h2 class="tile__title">Say hello</h2>
-      {{ partial "socials.html" (dict "socials" $p.socials "show_empty" false) }}
-      <p class="tile__text"><a class="link" href="{{ "contact/" | relURL }}"><span>Contact page</span></a></p>
-    </div>
-
+    {{- with $p.contact.note }}<p class="closing__note">{{ . }}</p>{{ end }}
+    <ul class="closing__links">
+      {{- with $p.contact.phone }}<li><a href="tel:{{ replaceRE "[^0-9+]" "" . }}">Call {{ . }}</a></li>{{ end }}
+      {{- with $p.contact.whatsapp }}<li><a href="https://wa.me/{{ replaceRE "[^0-9]" "" . }}" rel="noopener noreferrer">WhatsApp</a></li>{{ end }}
+      {{- $names := dict "github" "GitHub" "linkedin" "LinkedIn" "facebook" "Facebook" "x" "X" "instagram" "Instagram" "youtube" "YouTube" }}
+      {{- range $p.socials }}{{ if .url }}<li><a href="{{ .url }}" rel="noopener noreferrer">{{ index $names (lower .name) | default .name }}</a></li>{{ end }}{{ end }}
+    </ul>
   </div>
 </section>

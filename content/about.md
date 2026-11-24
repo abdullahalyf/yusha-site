@@ -1,5 +1,5 @@
 ---
 title: "About"
-description: "About {name}: background, education, experience and what they work on."
+description: "Who I am, where I studied, what I do outside class."
 layout: "about"
 ---

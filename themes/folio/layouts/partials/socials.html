@@ -17,12 +17,12 @@
     {{- if .url }}
     <a class="social" href="{{ .url }}" rel="noopener noreferrer">
       {{ partial "icon.html" (dict "name" .name "class" "social__icon") }}
-      <span class="social__name">{{ .name }}</span>
+      <span class="social__name">{{ .label | default .name }}</span>
     </a>
     {{- else }}
     <span class="social social--soon" aria-disabled="true">
       {{ partial "icon.html" (dict "name" .name "class" "social__icon") }}
-      <span class="social__name">{{ .name }}</span>
+      <span class="social__name">{{ .label | default .name }}</span>
       <span class="social__soon">soon</span>
     </span>
     {{- end }}

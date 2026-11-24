@@ -1,5 +1,5 @@
 ---
 title: "Projects"
-description: "Projects by {name}, with the tools used to build them."
+description: "Course programs in C and Java, and the electronics I build with friends."
 layout: "projects"
 ---

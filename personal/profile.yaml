@@ -23,16 +23,25 @@ stats:
   - value: "5.00"
     decimals: 2
     label: "GPA in SSC"
-  - value: "1"
-    label: "year of tutoring"
 
 highlight_academics: false
 academics: []
 home_sections:
-  - moments
-  - writing
-  - contact
+  - none            # the nocturne home page draws its own sections
 moments: 6
+
+highlights:                        # the photo row on the home page (files in personal/photos/)
+  - { photo: "award-1", caption: "Finished my first marathon with Navana Runners, 2025." }
+  - { photo: "hobby-1", caption: "In goal, where I'm happiest." }
+  - { photo: "gallery/g02", caption: "Speaking at a school event." }
+
+about_facts:                       # the side card on the About page
+  - { label: "Studying", value: "B.Sc. CSE, Daffodil International University" }
+  - { label: "Based in", value: "Gazipur, Bangladesh" }
+  - { label: "Plays", value: "Goalkeeper" }
+  - { label: "Supports", value: "Spain" }
+  - { label: "Teaches", value: "Maths, science, English and ICT, Play to Class 10" }
+  - { label: "Speaks", value: "Bangla, English, Hindi, Spanish" }
 
 facts:
   - "CSE, Daffodil International University"
@@ -43,11 +52,13 @@ facts:
 brief: "I'm a CSE student at Daffodil International University. I write C and Java for my courses, teach school students on the side, and play goalkeeper for fun and for my team."
 
 bio: |
-  I'm Yousha, a Computer Science and Engineering student at Daffodil International University. My CGPA is 3.50, and I'm still early in the degree, learning C and Java and getting comfortable with HTML.
+  I'm Yousha, a Computer Science and Engineering student at Daffodil International University in my first year, with a CGPA of 3.50. I write C and Java for my courses and I'm getting comfortable with HTML.
 
-  Most of my programming so far is course work. The one I'm proudest of is StockSync, a warehouse inventory program in C that I built for the CSE214 Algorithm Lab. It runs from a text menu and covers stock, search, sorting and reports.
+  The project I'm proudest of is StockSync, a warehouse inventory program in C for the CSE214 Algorithm Lab. Away from the keyboard I like building small electronics with friends: a digital ammeter, and a light that switches on when you clap.
 
-  Outside class I tutor school students from Play to Class 10 in maths, science, English and ICT. I was also games prefect at school, where I organised inter-house games and led the football team. In goal is where I'm happiest.
+  For about a year I've tutored school students from Play to Class 10 in maths, science, English and ICT, online and at their homes. Teaching is how I find out whether I really understand something.
+
+  At school I was games prefect. I organised inter-house games and led the football team, and I play in goal. I ran my first marathon with Navana Runners in 2025, and I have supported Spain for as long as I have watched football.
 
 education:
   - degree: "B.Sc. in Computer Science and Engineering"
@@ -87,28 +98,45 @@ skills:
     items: ["Teaching", "Leadership", "Event management", "Teamwork"]
 
 projects:
-  - title: "StockSync — Warehouse Inventory"
-    summary: "A menu-driven inventory program in C for the CSE214 Algorithm Lab. Add, edit and remove products, record stock in and out, search, sort, and get low-stock, category-value and supplier reports. Exports to CSV and keeps a backup."
+  - title: "StockSync, a warehouse inventory program"
+    summary: "A menu-driven inventory program in C for the CSE214 Algorithm Lab. Add, edit and remove products, record stock in and out, search and sort, and print low-stock, category-value and supplier reports. Saves to file, exports to CSV and keeps a backup."
     tech: ["C", "File storage", "CSV"]
-    alt: "The StockSync menu running in a terminal, listing the dashboard, product, stock, search, report and backup options."
+    alt: "The StockSync main menu in a terminal, listing the dashboard, product, stock, search, report and backup options."
     live: ""
     code: "https://github.com/youshaahmad52-ship-it/WareHouse-Inventory"
     featured: true
-  - title: "Student Result Calculator"
-    summary: "A small C program that takes marks for each subject and prints the total, GPA and grade for a student."
+  - title: "Digital ammeter"
+    summary: "A small current meter built with friends. A sensor sits in series with the load, an Arduino reads its voltage and turns it into milliamps, and the reading is shown live. We checked it against a multimeter until the two agreed."
+    tech: ["Arduino", "Current sensor", "Electronics"]
+    alt: "Demo photo: a multimeter and test leads measuring the current drawn by a small circuit."
+    live: ""
+    code: ""
+    featured: true
+  - title: "Clap-controlled light"
+    summary: "Clap once and the light turns on, clap again and it turns off. A microphone module feeds the Arduino, which looks for a sharp spike in sound and switches the light through a relay. Most of the work was tuning it so talking does not trigger it."
+    tech: ["Arduino", "Sound sensor", "Relay"]
+    alt: "Demo photo: an Arduino with a microphone module on a breadboard, lighting a grid of LEDs."
+    live: ""
+    code: ""
+    featured: true
+  - title: "Student result calculator"
+    summary: "A C program that takes the marks for each subject and prints the grade, grade point, total and GPA, using the grading scale from school."
     tech: ["C"]
+    alt: "The result calculator running in a terminal, printing marks, grades, points and a GPA of 3.85."
     live: ""
     code: ""
     featured: false
-  - title: "Simple Bank Account"
-    summary: "A console program in Java for a course, with deposit, withdraw and balance check on one account."
+  - title: "Simple bank account"
+    summary: "A console program in Java for a course. One account with deposit, withdraw and balance check, and a refusal when a withdrawal is larger than the balance."
     tech: ["Java"]
+    alt: "The bank account program running in a terminal, showing deposits, withdrawals and a refused withdrawal."
     live: ""
     code: ""
     featured: false
   - title: "My first web page"
-    summary: "A one-page introduction to myself, written in plain HTML while I was learning how a page is built."
+    summary: "A one-page introduction to myself in plain HTML: headings, a list of hobbies, a table of the classes I teach and an email link."
     tech: ["HTML"]
+    alt: "A plain HTML page titled Hello, I am Yousha Ahmad, with a hobby list and a table of subjects taught."
     live: ""
     code: ""
     featured: false
@@ -167,10 +195,23 @@ contact:
 
 socials:
   - name: "github"
+    label: "GitHub"
     url: "https://github.com/youshaahmad52-ship-it"
   - name: "linkedin"
+    label: "LinkedIn"
     url: "https://www.linkedin.com/in/yousha-ahmad-b71719383"
   - name: "facebook"
+    label: "Facebook"
     url: "https://www.facebook.com/share/1ELDgyc2gY/"
 
 background: none
+
+contact_side:                      # right column on the Contact page (nocturne style)
+  photo: "gallery/g02"
+  photo_alt: "Yousha speaking at a podium"
+  title: "Good reasons to write"
+  topics:
+    - { title: "Tuition.", text: "Maths, science, English or ICT for Play to Class 10, online or at home." }
+    - { title: "Study groups.", text: "C or Java practice before a lab or an exam." }
+    - { title: "Electronics.", text: "Small Arduino builds like the ammeter or the clap light." }
+    - { title: "Football.", text: "If your team needs a goalkeeper." }
